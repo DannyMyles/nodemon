@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
-const sharp_1 = __importDefault(require("sharp"));
 function default_1() {
     let uploader = (0, multer_1.default)({ dest: `./public/uploads/` });
     const storage = multer_1.default.diskStorage({
@@ -23,8 +22,6 @@ function default_1() {
         },
         filename: function (req, file, cb) {
             return __awaiter(this, void 0, void 0, function* () {
-                const metadata = yield (0, sharp_1.default)(file.originalname).metadata();
-                console.log(metadata);
                 cb(null, file.originalname);
             });
         },

@@ -1,8 +1,8 @@
 export interface IImage {
-    type: string;
-    name: string;
+  type: string;
+  name: string;
 }
 
 export class ImageModel implements IImage {
-    constructor(public type: string = '', public name: string = '') {}
+  constructor(public type: string = '', public name: string = '') {}
 }

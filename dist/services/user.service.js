@@ -17,7 +17,6 @@ class UserService {
     createUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(data, 'in service');
                 const newUser = yield userEntity_1.default.create({
                     roleId: data.roleId,
                     fullname: data.fullname,
@@ -40,7 +39,7 @@ class UserService {
             try {
                 return userEntity_1.default.findOne({
                     where: { username },
-                    include: ["role"],
+                    include: ['role'],
                 });
             }
             catch (err) {

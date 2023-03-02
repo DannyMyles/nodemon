@@ -30,8 +30,6 @@ const connect_db_1 = require("../connect-db");
 const sequelize_1 = require("sequelize");
 const crypto = __importStar(require("crypto"));
 const roleEntity_1 = __importDefault(require("./roleEntity"));
-// import Role from "./roleEntity";
-// import Auth from "./authEntity"
 class User extends sequelize_1.Model {
 }
 User.init({
@@ -78,14 +76,14 @@ User.init({
     },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: "user",
+    modelName: 'user',
     freezeTableName: true,
 });
 roleEntity_1.default.hasMany(User, {
-    foreignKey: "roleId"
+    foreignKey: 'roleId',
 });
 User.belongsTo(roleEntity_1.default, {
-    foreignKey: "roleId"
+    foreignKey: 'roleId',
 });
 User.prototype.validatePassword = function (enteredPassword) {
     const newHash = crypto

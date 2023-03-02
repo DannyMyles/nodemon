@@ -7,7 +7,7 @@ export async function verifyUser(
     req: Request,
     res: Response,
     next: NextFunction,
-): Promise<any | void> {
+): Promise<NextFunction | Response | void> {
     try {
         const authHeader = req.header('authorization');
 

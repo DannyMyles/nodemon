@@ -36,7 +36,6 @@ class AuthController {
                     }
                     else {
                         const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.password);
-                        console.log(user, 'in login');
                         const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
                         return res.status(200).send({
                             code: 200,
@@ -89,7 +88,6 @@ class AuthController {
                         message: 'Role not found!!!',
                     });
                 }
-                console.log(userRole, 'role of user');
                 if (userRole.role === constants_1.ROLE_TYPES.ADMIN && userRole.count > 1) {
                     return res.status(400).send({
                         code: 400,
@@ -111,7 +109,6 @@ class AuthController {
                 }
             }
             catch (err) {
-                console.log(err, 'in controller');
                 return res.sendStatus(500);
             }
         });

@@ -17,7 +17,7 @@ Image.init({
     },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: "image",
+    modelName: 'image',
     freezeTableName: true,
 });
 Image.belongsTo(userEntity_1.default);

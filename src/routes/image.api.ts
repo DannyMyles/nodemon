@@ -9,10 +9,10 @@ const imageController = new ImageController();
 router.get('/images', imageController.getImages);
 router.get('/image/:id', imageController.getImageById);
 router.post(
-    '/submit',
-    // verifyUser,
-    upload().single('file'),
-    imageController.addUserSubmittedImage,
+  '/submit',
+  verifyUser,
+  upload().single('file'),
+  imageController.addUserSubmittedImage,
 );
 
 export default router;

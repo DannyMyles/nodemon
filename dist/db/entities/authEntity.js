@@ -25,7 +25,7 @@ AuthSession.init({
     },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: "auth",
+    modelName: 'auth',
     freezeTableName: true,
 });
 AuthSession.belongsTo(userEntity_1.default, {

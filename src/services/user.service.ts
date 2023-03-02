@@ -1,6 +1,5 @@
 import User from '../db/entities/userEntity';
 import { UserModel } from '../core/models/userModel';
-import Role from '../db/entities/roleEntity';
 
 export default class UserService {
     public async createUser(data: Omit<UserModel, 'id'>): Promise<User | void> {

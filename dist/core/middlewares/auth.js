@@ -30,28 +30,27 @@ function verifyUser(req, res, next) {
                 typeof bearer[1] === 'undefined') {
                 return res.status(401).send({
                     code: 401,
-                    message: "Unauthorized!!! Invalid Bearer token!",
+                    message: 'Unauthorized!!! Invalid Bearer token!',
                 });
             }
             const accessToken = bearer[1];
             if (!accessToken) {
                 return res.status(403).send({
                     code: 401,
-                    message: "Forbidden!!!",
+                    message: 'Forbidden!!!',
                 });
             }
             const user = jwtService.verifyToken(accessToken);
             if (!user) {
                 return res.status(401).send({
                     code: 401,
-                    message: "Unauthorized!!! Invalid User!",
+                    message: 'Unauthorized!!! Invalid User!',
                 });
             }
             res.locals.user = user;
             return next();
         }
         catch (err) {
-            console.log(err);
             return res.sendStatus(500);
         }
     });
