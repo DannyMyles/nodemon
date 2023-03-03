@@ -1,32 +1,39 @@
 import Image from '../db/entities/imageEntity';
 import multer from 'multer';
+import { NextFunction } from 'express';
 
 export default class ImageService {
-  public async createImage(data: multer.Multer): Promise<Image | void> {
+  public async createImage(
+    data: multer.Multer,
+    next: NextFunction,
+  ): Promise<Image | void> {
     try {
       return Image.create({
         type: data.mimetype,
         name: data.originalname,
       });
     } catch (err) {
-      throw new Error(err);
+      return next(err);
     }
   }
 
-  public async getAll(): Promise<Image[] | void> {
+  public async getAll(next: NextFunction): Promise<Image[] | void> {
     try {
       return Image.findAll();
     } catch (err) {
-      throw new Error(err);
+      return next(err);
     }
   }
 
   // Getting image by id
-  public async getImageById(imageId: number): Promise<Image | void> {
+  public async getImageById(
+    imageId: number,
+    next: NextFunction,
+  ): Promise<Image | void> {
     try {
       return Image.findByPk(imageId);
     } catch (err) {
-      throw new Error(err);
+      return next(err);
     }
   }
 }

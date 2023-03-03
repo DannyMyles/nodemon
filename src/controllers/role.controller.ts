@@ -1,55 +1,47 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import RoleService from '../services/role.service';
+import { ApiResponse } from '../core/models/responseModel';
 
 const roleService = new RoleService();
 
 export default class RoleController {
-  public async createRole(req: Request, res: Response) {
+  public async createRole(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<ApiResponse | void> {
     try {
-      const role = await roleService.createRole(req.body);
-      return res.status(201).send({
-        code: 201,
-        success: true,
-        message: 'Role created successfully!',
-        data: role,
-      });
+      const role = await roleService.createRole(req.body, next);
+      return new ApiResponse(201, role, 'Role created successfully!', false);
     } catch (err) {
-      return res.sendStatus(500);
+      return next(err);
     }
   }
 
-  public async getAll(req: Request, res: Response) {
+  public async getAll(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<ApiResponse | void> {
     try {
-      const roles = await roleService.getAll();
-      return res.status(200).send({
-        code: 200,
-        success: true,
-        message: 'Got all roles!',
-        data: roles,
-      });
+      const roles = await roleService.getAll(next);
+      return new ApiResponse(200, roles, 'Got all roles', false);
     } catch (err) {
-      return res.status(400).send({
-        code: 400,
-        message: 'Roles not found!',
-      });
+      return next(err);
     }
   }
 
-  public async getRoleById(req: Request, res: Response) {
+  public async getRoleById(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<ApiResponse | void> {
     try {
       const { id } = req.params;
-      const role = await roleService.getRoleById(Number(id));
-      return res.status(200).send({
-        code: 200,
-        success: true,
-        message: 'Got the role!',
-        data: role,
-      });
+      const role = await roleService.getRoleById(Number(id), next);
+      return new ApiResponse(200, role, 'Got the role', false);
     } catch (err) {
-      return res.status(400).send({
-        code: 400,
-        message: 'Role not found!',
-      });
+      return next(err);
     }
   }
 }

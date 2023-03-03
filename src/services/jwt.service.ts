@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { ROLE_TYPES } from '../utils/constants';
 import { IToken } from '../core/models/tokenModel';
+import { NextFunction } from 'express';
 
 export default class JwtService {
   public generateAccessToken(
@@ -22,11 +23,11 @@ export default class JwtService {
       },
     );
   }
-  public verifyToken(token: string): IToken {
+  public verifyToken(token: string, next: NextFunction): IToken | void {
     try {
       return jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
-      return null;
+      return next(err);
     }
   }
 }

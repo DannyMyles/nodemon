@@ -15,12 +15,12 @@ class JwtService {
             expiresIn: process.env.EXP_TIME,
         });
     }
-    verifyToken(token) {
+    verifyToken(token, next) {
         try {
             return jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         }
         catch (err) {
-            return null;
+            return next(err);
         }
     }
 }

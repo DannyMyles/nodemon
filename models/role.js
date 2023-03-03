@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model, DataTypes
-} = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class role extends Model {
     /**
@@ -13,26 +11,29 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  role.init({
-    roleId: {
-      type: Sequelize.DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  role.init(
+    {
+      roleId: {
+        type: Sequelize.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      count: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+      },
     },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+    {
+      sequelize,
+      modelName: 'role',
+      freezeTableName: true,
     },
-    count: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-    }
-  }, {
-    sequelize,
-    modelName: 'role',
-    freezeTableName: true,
-  });
+  );
   return role;
 };

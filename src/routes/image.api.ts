@@ -2,11 +2,17 @@ import { Router } from 'express';
 import ImageController from '../controllers/image.controller';
 import upload from '../core/middlewares/upload';
 import { verifyUser } from '../core/middlewares/auth';
+import permission from '../core/middlewares/permission';
+import { ROLE_TYPES } from '../utils/constants';
 
 const router = Router();
 const imageController = new ImageController();
 
-router.get('/images', imageController.getImages);
+router.get(
+  '/images',
+  permission([ROLE_TYPES.ADMIN]),
+  imageController.getImages,
+);
 router.get('/image/:id', imageController.getImageById);
 router.post(
   '/submit',

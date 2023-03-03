@@ -1,28 +1,33 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/user.service';
 import JwtService from '../services/jwt.service';
 import { UserModel } from '../core/models/userModel';
 import RoleService from '../services/role.service';
 import { ROLE_TYPES } from '../utils/constants';
+import { ApiResponse } from '../core/models/responseModel';
 
 const roleService = new RoleService();
 const jwtService = new JwtService();
 const userService = new UserService();
 
 export default class AuthController {
-  public async login(req: Request, res: Response) {
+  public async login(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<ApiResponse | void> {
     try {
       const { username, password } = req.body;
-      const user = await userService.findUserByUsername(username);
+      if (!(username && password)) {
+        return ApiResponse.generateBadRequestErrorResponse();
+      }
+      const user = await userService.findUserByUsername(username, next);
 
       if (user) {
         const isPasswordMatch = user.validatePassword(password);
 
         if (!isPasswordMatch) {
-          return res.status(401).send({
-            code: 401,
-            message: 'Invalid user data!',
-          });
+          return ApiResponse.generateLoginInvalidErrorResponse();
         } else {
           const accessToken = jwtService.generateAccessToken(
             user.id,
@@ -43,25 +48,26 @@ export default class AuthController {
             user.roleId,
             user['role'].role,
           );
-          return res.status(200).send({
-            code: 200,
-            success: true,
-            message: 'User logged in successfully!',
+          return new ApiResponse(
+            200,
             data,
-          });
+            'User logged in successfully!',
+            false,
+          );
         }
       } else {
-        return res.status(404).send({
-          code: 404,
-          message: 'User not found!',
-        });
+        return ApiResponse.generateNotFoundErrorResponse('User');
       }
     } catch (err) {
-      return res.sendStatus(500);
+      return next(err);
     }
   }
 
-  public async signup(req: Request, res: Response) {
+  public async signup(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<ApiResponse | void> {
     try {
       const {
         fullname,
@@ -85,36 +91,24 @@ export default class AuthController {
           password
         )
       ) {
-        return res.status(400).send({
-          code: 400,
-          message: 'Invalid user data!',
-        });
+        return ApiResponse.generateBadRequestErrorResponse();
       }
 
-      const userExists = await userService.findUserByUsername(username);
+      const userExists = await userService.findUserByUsername(username, next);
       if (userExists) {
-        return res.status(409).send({
-          code: 409,
-          message: 'User already exists!',
-        });
+        return ApiResponse.generateDuplicationErrorResponse();
       }
 
-      const userRole = await roleService.getOneRole(role);
+      const userRole = await roleService.getOneRole(role, next);
       if (!userRole) {
-        return res.status(404).send({
-          code: 404,
-          message: 'Role not found!!!',
-        });
+        return ApiResponse.generateNotFoundErrorResponse('Role');
       }
       if (userRole.role === ROLE_TYPES.ADMIN && userRole.count > 1) {
-        return res.status(400).send({
-          code: 400,
-          message: "Bad request!!! Can't be more than 2 admins!",
-        });
+        return ApiResponse.generateBadRequestErrorResponse();
       }
 
       req.body.roleId = userRole.roleId;
-      const user = await userService.createUser(req.body);
+      const user = await userService.createUser(req.body, next);
       if (user) {
         const accessToken = jwtService.generateAccessToken(
           user.id,
@@ -135,16 +129,11 @@ export default class AuthController {
           user.roleId,
           user['role'].role,
         );
-        await roleService.updateRoleCount(role);
-        return res.status(201).send({
-          code: 201,
-          success: true,
-          message: 'User created successfully!',
-          data,
-        });
+        await roleService.incrementRoleCount(role, next);
+        return new ApiResponse(201, data, 'User created successfully!', false);
       }
     } catch (err) {
-      return res.sendStatus(500);
+      return next(err);
     }
   }
 }

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const roleEntity_1 = __importDefault(require("../db/entities/roleEntity"));
 class RoleService {
-    createRole(data) {
+    createRole(data, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return roleEntity_1.default.create({
@@ -22,32 +22,32 @@ class RoleService {
                 });
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
-    getAll() {
+    getAll(next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return roleEntity_1.default.findAll();
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
-    getRoleById(roleId) {
+    getRoleById(roleId, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return roleEntity_1.default.findByPk(roleId);
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
     // Getting role by role
-    getOneRole(role) {
+    getOneRole(role, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return roleEntity_1.default.findOne({
@@ -55,15 +55,15 @@ class RoleService {
                 });
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
     // If returns 0 then nothing is updated, else returns 1.
-    updateRoleCount(role) {
+    incrementRoleCount(role, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const currRole = yield this.getOneRole(role);
+                const currRole = yield this.getOneRole(role, next);
                 if (currRole) {
                     const updatedCount = yield roleEntity_1.default.update({
                         count: currRole.count + 1,
@@ -76,7 +76,27 @@ class RoleService {
                 }
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
+            }
+        });
+    }
+    decrementRoleCount(role, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const currRole = yield this.getOneRole(role, next);
+                if (currRole) {
+                    const updatedCount = yield roleEntity_1.default.update({
+                        count: currRole.count - 1,
+                    }, {
+                        where: {
+                            role: role,
+                        },
+                    });
+                    return updatedCount[0];
+                }
+            }
+            catch (err) {
+                return next(err);
             }
         });
     }

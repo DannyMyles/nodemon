@@ -17,47 +17,40 @@ const jwt_service_1 = __importDefault(require("../services/jwt.service"));
 const userModel_1 = require("../core/models/userModel");
 const role_service_1 = __importDefault(require("../services/role.service"));
 const constants_1 = require("../utils/constants");
+const responseModel_1 = require("../core/models/responseModel");
 const roleService = new role_service_1.default();
 const jwtService = new jwt_service_1.default();
 const userService = new user_service_1.default();
 class AuthController {
-    login(req, res) {
+    login(req, _res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username, password } = req.body;
-                const user = yield userService.findUserByUsername(username);
+                if (!(username && password)) {
+                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                }
+                const user = yield userService.findUserByUsername(username, next);
                 if (user) {
                     const isPasswordMatch = user.validatePassword(password);
                     if (!isPasswordMatch) {
-                        return res.status(401).send({
-                            code: 401,
-                            message: 'Invalid user data!',
-                        });
+                        return responseModel_1.ApiResponse.generateLoginInvalidErrorResponse();
                     }
                     else {
                         const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.password);
                         const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
-                        return res.status(200).send({
-                            code: 200,
-                            success: true,
-                            message: 'User logged in successfully!',
-                            data,
-                        });
+                        return new responseModel_1.ApiResponse(200, data, 'User logged in successfully!', false);
                     }
                 }
                 else {
-                    return res.status(404).send({
-                        code: 404,
-                        message: 'User not found!',
-                    });
+                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('User');
                 }
             }
             catch (err) {
-                return res.sendStatus(500);
+                return next(err);
             }
         });
     }
-    signup(req, res) {
+    signup(req, _res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { fullname, lastname, email, birthdate, gender, username, password, } = req.body;
@@ -69,47 +62,30 @@ class AuthController {
                     gender &&
                     username &&
                     password)) {
-                    return res.status(400).send({
-                        code: 400,
-                        message: 'Invalid user data!',
-                    });
+                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
                 }
-                const userExists = yield userService.findUserByUsername(username);
+                const userExists = yield userService.findUserByUsername(username, next);
                 if (userExists) {
-                    return res.status(409).send({
-                        code: 409,
-                        message: 'User already exists!',
-                    });
+                    return responseModel_1.ApiResponse.generateDuplicationErrorResponse();
                 }
-                const userRole = yield roleService.getOneRole(role);
+                const userRole = yield roleService.getOneRole(role, next);
                 if (!userRole) {
-                    return res.status(404).send({
-                        code: 404,
-                        message: 'Role not found!!!',
-                    });
+                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('Role');
                 }
                 if (userRole.role === constants_1.ROLE_TYPES.ADMIN && userRole.count > 1) {
-                    return res.status(400).send({
-                        code: 400,
-                        message: "Bad request!!! Can't be more than 2 admins!",
-                    });
+                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
                 }
                 req.body.roleId = userRole.roleId;
-                const user = yield userService.createUser(req.body);
+                const user = yield userService.createUser(req.body, next);
                 if (user) {
                     const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.email);
                     const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
-                    yield roleService.updateRoleCount(role);
-                    return res.status(201).send({
-                        code: 201,
-                        success: true,
-                        message: 'User created successfully!',
-                        data,
-                    });
+                    yield roleService.incrementRoleCount(role, next);
+                    return new responseModel_1.ApiResponse(201, data, 'User created successfully!', false);
                 }
             }
             catch (err) {
-                return res.sendStatus(500);
+                return next(err);
             }
         });
     }

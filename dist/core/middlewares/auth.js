@@ -14,44 +14,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyUser = void 0;
 const jwt_service_1 = __importDefault(require("../../services/jwt.service"));
+const responseModel_1 = require("../models/responseModel");
 const jwtService = new jwt_service_1.default();
 function verifyUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const authHeader = req.header('authorization');
             if (!authHeader) {
-                return res.status(401).send({
-                    code: 401,
-                    message: "Unauthorized!!! Auth Header doesn't exist!",
-                });
+                return responseModel_1.ApiResponse.generateBearerInvalidErrorResponse();
             }
             const bearer = authHeader.split(' ');
             if (bearer[0].toLowerCase() !== 'bearer' ||
                 typeof bearer[1] === 'undefined') {
-                return res.status(401).send({
-                    code: 401,
-                    message: 'Unauthorized!!! Invalid Bearer token!',
-                });
+                return responseModel_1.ApiResponse.generateBearerInvalidErrorResponse();
             }
             const accessToken = bearer[1];
             if (!accessToken) {
-                return res.status(403).send({
-                    code: 401,
-                    message: 'Forbidden!!!',
-                });
+                return responseModel_1.ApiResponse.generateNotAuthorizedErrorResponse();
             }
-            const user = jwtService.verifyToken(accessToken);
+            const user = jwtService.verifyToken(accessToken, next);
             if (!user) {
-                return res.status(401).send({
-                    code: 401,
-                    message: 'Unauthorized!!! Invalid User!',
-                });
+                return responseModel_1.ApiResponse.generateNotAuthorizedErrorResponse();
             }
             res.locals.user = user;
             return next();
         }
         catch (err) {
-            return res.sendStatus(500);
+            return next(err);
         }
     });
 }

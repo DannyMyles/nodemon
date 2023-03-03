@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const imageEntity_1 = __importDefault(require("../db/entities/imageEntity"));
 class ImageService {
-    createImage(data) {
+    createImage(data, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return imageEntity_1.default.create({
@@ -23,28 +23,28 @@ class ImageService {
                 });
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
-    getAll() {
+    getAll(next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return imageEntity_1.default.findAll();
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }
     // Getting image by id
-    getImageById(imageId) {
+    getImageById(imageId, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return imageEntity_1.default.findByPk(imageId);
             }
             catch (err) {
-                throw new Error(err);
+                return next(err);
             }
         });
     }

@@ -13,60 +13,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const image_service_1 = __importDefault(require("../services/image.service"));
+const responseModel_1 = require("../core/models/responseModel");
 const imageService = new image_service_1.default();
 class ImageController {
-    getImages(req, res) {
+    getImages(req, _res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const images = yield imageService.getAll();
-                return res.status(200).send({
-                    code: 200,
-                    success: true,
-                    message: 'Got all images!',
-                    data: images,
-                });
+                const images = yield imageService.getAll(next);
+                return new responseModel_1.ApiResponse(200, images, 'Got all images', false);
             }
             catch (err) {
-                return res.status(400).send({
-                    code: 400,
-                    message: 'Images not found!',
-                });
+                return next(err);
             }
         });
     }
-    getImageById(req, res) {
+    getImageById(req, _res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const image = yield imageService.getImageById(Number(id));
-                return res.status(200).send({
-                    code: 200,
-                    success: true,
-                    message: 'Got the image!',
-                    data: image,
-                });
+                const image = yield imageService.getImageById(Number(id), next);
+                return new responseModel_1.ApiResponse(200, image, 'Got the image!', false);
             }
             catch (err) {
-                return res.status(400).send({
-                    code: 400,
-                    message: 'Image not found!',
-                });
+                return next(err);
             }
         });
     }
-    addUserSubmittedImage(req, res) {
+    addUserSubmittedImage(req, _res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const image = yield imageService.createImage(req['file']);
-                return res.status(201).send({
-                    code: 201,
-                    success: true,
-                    message: 'Image created successfully!',
-                    data: image,
-                });
+                const image = yield imageService.createImage(req['file'], next);
+                return new responseModel_1.ApiResponse(201, image, 'image uploaded successfully!', false);
             }
             catch (err) {
-                return res.sendStatus(500);
+                return next(err);
             }
         });
     }

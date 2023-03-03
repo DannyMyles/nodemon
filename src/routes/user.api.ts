@@ -1,29 +1,36 @@
 import { Router } from 'express';
-import RoleController from '../controllers/role.controller';
+import UserController from '../controllers/user.controller';
 import { verifyUser } from '../core/middlewares/auth';
 import permission from '../core/middlewares/permission';
 import { ROLE_TYPES } from '../utils/constants';
 
-const roleController = new RoleController();
 const router = Router();
+const userController = new UserController();
 
 router.get(
   '/',
-  permission([ROLE_TYPES.ADMIN]),
   verifyUser,
-  roleController.getAll,
+  permission([ROLE_TYPES.ADMIN]),
+  userController.getAll,
 );
 router.get(
   '/:id',
-  permission([ROLE_TYPES.ADMIN]),
   verifyUser,
-  roleController.getRoleById,
+  permission([ROLE_TYPES.ADMIN]),
+  userController.get,
 );
-router.post(
-  '/',
-  permission([ROLE_TYPES.ADMIN]),
+
+router.put(
+  '/:id',
   verifyUser,
-  roleController.createRole,
+  permission([ROLE_TYPES.ADMIN]),
+  userController.update,
+);
+router.delete(
+  '/:id',
+  verifyUser,
+  permission([ROLE_TYPES.ADMIN]),
+  userController.delete,
 );
 
 export default router;
