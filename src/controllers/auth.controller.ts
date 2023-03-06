@@ -13,13 +13,15 @@ const userService = new UserService();
 export default class AuthController {
   public async login(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const { username, password } = req.body;
       if (!(username && password)) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
       const user = await userService.findUserByUsername(username, next);
 
@@ -27,7 +29,9 @@ export default class AuthController {
         const isPasswordMatch = user.validatePassword(password);
 
         if (!isPasswordMatch) {
-          return ApiResponse.generateLoginInvalidErrorResponse();
+          return res
+            .status(403)
+            .send(ApiResponse.generateLoginInvalidErrorResponse());
         } else {
           const accessToken = jwtService.generateAccessToken(
             user.id,
@@ -48,15 +52,16 @@ export default class AuthController {
             user.roleId,
             user['role'].role,
           );
-          return new ApiResponse(
-            200,
-            data,
-            'User logged in successfully!',
-            false,
-          );
+          return res
+            .status(200)
+            .send(
+              new ApiResponse(200, data, 'User logged in successfully!', false),
+            );
         }
       } else {
-        return ApiResponse.generateNotFoundErrorResponse('User');
+        return res
+          .status(404)
+          .send(ApiResponse.generateNotFoundErrorResponse('User'));
       }
     } catch (err) {
       return next(err);
@@ -65,9 +70,9 @@ export default class AuthController {
 
   public async signup(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const {
         fullname,
@@ -91,20 +96,28 @@ export default class AuthController {
           password
         )
       ) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
       const userExists = await userService.findUserByUsername(username, next);
       if (userExists) {
-        return ApiResponse.generateDuplicationErrorResponse();
+        return res
+          .status(409)
+          .send(ApiResponse.generateDuplicationErrorResponse());
       }
 
       const userRole = await roleService.getOneRole(role, next);
       if (!userRole) {
-        return ApiResponse.generateNotFoundErrorResponse('Role');
+        return res
+          .status(404)
+          .send(ApiResponse.generateNotFoundErrorResponse('Role'));
       }
       if (userRole.role === ROLE_TYPES.ADMIN && userRole.count > 1) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
       req.body.roleId = userRole.roleId;
@@ -129,8 +142,13 @@ export default class AuthController {
           user.roleId,
           user['role'].role,
         );
+
         await roleService.incrementRoleCount(role, next);
-        return new ApiResponse(201, data, 'User created successfully!', false);
+        return res
+          .status(201)
+          .send(
+            new ApiResponse(201, data, 'User created successfully!', false),
+          );
       }
     } catch (err) {
       return next(err);

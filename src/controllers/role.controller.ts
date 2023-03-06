@@ -7,25 +7,29 @@ const roleService = new RoleService();
 export default class RoleController {
   public async createRole(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const role = await roleService.createRole(req.body, next);
-      return new ApiResponse(201, role, 'Role created successfully!', false);
+      return res
+        .status(201)
+        .send(new ApiResponse(201, role, 'Role created successfully!', false));
     } catch (err) {
       return next(err);
     }
   }
 
   public async getAll(
-    req: Request,
-    _res: Response,
+    _req: Request,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const roles = await roleService.getAll(next);
-      return new ApiResponse(200, roles, 'Got all roles', false);
+      return res
+        .status(200)
+        .send(new ApiResponse(200, roles, 'Got all roles', false));
     } catch (err) {
       return next(err);
     }
@@ -33,13 +37,15 @@ export default class RoleController {
 
   public async getRoleById(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const { id } = req.params;
       const role = await roleService.getRoleById(Number(id), next);
-      return new ApiResponse(200, role, 'Got the role', false);
+      return res
+        .status(200)
+        .send(new ApiResponse(200, role, 'Got the role', false));
     } catch (err) {
       return next(err);
     }

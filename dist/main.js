@@ -15,7 +15,7 @@ const image_api_1 = __importDefault(require("./routes/image.api"));
 const errorHandler_1 = __importDefault(require("./core/errorHandler/errorHandler"));
 const app = (0, express_1.default)();
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: ['*'],
     credentials: true,
     optionSuccessStatus: 200,
 };

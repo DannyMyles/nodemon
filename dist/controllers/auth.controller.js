@@ -22,27 +22,35 @@ const roleService = new role_service_1.default();
 const jwtService = new jwt_service_1.default();
 const userService = new user_service_1.default();
 class AuthController {
-    login(req, _res, next) {
+    login(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { username, password } = req.body;
                 if (!(username && password)) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 const user = yield userService.findUserByUsername(username, next);
                 if (user) {
                     const isPasswordMatch = user.validatePassword(password);
                     if (!isPasswordMatch) {
-                        return responseModel_1.ApiResponse.generateLoginInvalidErrorResponse();
+                        return res
+                            .status(403)
+                            .send(responseModel_1.ApiResponse.generateLoginInvalidErrorResponse());
                     }
                     else {
                         const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.password);
                         const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
-                        return new responseModel_1.ApiResponse(200, data, 'User logged in successfully!', false);
+                        return res
+                            .status(200)
+                            .send(new responseModel_1.ApiResponse(200, data, 'User logged in successfully!', false));
                     }
                 }
                 else {
-                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('User');
+                    return res
+                        .status(404)
+                        .send(responseModel_1.ApiResponse.generateNotFoundErrorResponse('User'));
                 }
             }
             catch (err) {
@@ -50,7 +58,7 @@ class AuthController {
             }
         });
     }
-    signup(req, _res, next) {
+    signup(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { fullname, lastname, email, birthdate, gender, username, password, } = req.body;
@@ -62,26 +70,37 @@ class AuthController {
                     gender &&
                     username &&
                     password)) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 const userExists = yield userService.findUserByUsername(username, next);
                 if (userExists) {
-                    return responseModel_1.ApiResponse.generateDuplicationErrorResponse();
+                    return res
+                        .status(409)
+                        .send(responseModel_1.ApiResponse.generateDuplicationErrorResponse());
                 }
                 const userRole = yield roleService.getOneRole(role, next);
                 if (!userRole) {
-                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('Role');
+                    return res
+                        .status(404)
+                        .send(responseModel_1.ApiResponse.generateNotFoundErrorResponse('Role'));
                 }
                 if (userRole.role === constants_1.ROLE_TYPES.ADMIN && userRole.count > 1) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 req.body.roleId = userRole.roleId;
                 const user = yield userService.createUser(req.body, next);
                 if (user) {
                     const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.email);
                     const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
+                    console.log(data, 'data');
                     yield roleService.incrementRoleCount(role, next);
-                    return new responseModel_1.ApiResponse(201, data, 'User created successfully!', false);
+                    return res
+                        .status(201)
+                        .send(new responseModel_1.ApiResponse(201, data, 'User created successfully!', false));
                 }
             }
             catch (err) {

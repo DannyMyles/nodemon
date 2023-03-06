@@ -1,7 +1,7 @@
 /node_modules
 .env
 .idea
-dist
+dist/*
 public/uploads/*
 /.history
 /.idea

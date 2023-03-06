@@ -20,13 +20,15 @@ const helpers_1 = require("../utils/helpers");
 const userService = new user_service_1.default();
 const roleService = new role_service_1.default();
 class UserController {
-    getAll(_req, _res, next) {
+    getAll(_req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const users = yield userService.getAll(next);
                 if (users && users.length) {
                     const data = users.map((user) => new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, '', '', 0, user['role']));
-                    return new responseModel_1.ApiResponse(200, data, 'Got all users.', false);
+                    return res
+                        .status(200)
+                        .send(new responseModel_1.ApiResponse(200, data, 'Got all users.', false));
                 }
             }
             catch (err) {
@@ -34,7 +36,7 @@ class UserController {
             }
         });
     }
-    update(req, _res, next) {
+    update(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = Number(req.params.id);
@@ -42,14 +44,20 @@ class UserController {
                 if (!(id &&
                     (0, helpers_1.isSubarray)(Object.keys(userModel_1.UserModel), Object.keys(user)) &&
                     Object.keys(user).length)) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 const isUser = yield userService.findById(id, next);
                 if (!isUser) {
-                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('User');
+                    return res
+                        .status(404)
+                        .send(responseModel_1.ApiResponse.generateNotFoundErrorResponse('User'));
                 }
                 const data = yield userService.update(id, user, next);
-                return new responseModel_1.ApiResponse(200, data, 'User updated successfully', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, data, 'User updated successfully', false));
             }
             catch (err) {
                 return next(err);
@@ -61,33 +69,45 @@ class UserController {
             try {
                 const id = Number(req.params.id);
                 if (!id) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 const isUser = yield userService.findById(id, next);
                 if (!isUser) {
-                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('User');
+                    return res
+                        .status(404)
+                        .send(responseModel_1.ApiResponse.generateNotFoundErrorResponse('User'));
                 }
                 yield roleService.decrementRoleCount(isUser['role'], next);
                 const deletedUser = yield userService.delete(id, next);
-                return new responseModel_1.ApiResponse(200, deletedUser, 'User deleted successfully', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, deletedUser, 'User deleted successfully', false));
             }
             catch (err) {
                 return next(err);
             }
         });
     }
-    get(req, _res, next) {
+    get(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = Number(req.params.id);
                 if (!id) {
-                    return responseModel_1.ApiResponse.generateBadRequestErrorResponse();
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
                 }
                 const user = yield userService.findById(id, next);
                 if (!user) {
-                    return responseModel_1.ApiResponse.generateNotFoundErrorResponse('User');
+                    return res
+                        .status(404)
+                        .send(responseModel_1.ApiResponse.generateNotFoundErrorResponse('User'));
                 }
-                return new responseModel_1.ApiResponse(200, user, 'Got user', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, user, 'Got user', false));
             }
             catch (err) {
                 return next(err);

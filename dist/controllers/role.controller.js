@@ -16,34 +16,40 @@ const role_service_1 = __importDefault(require("../services/role.service"));
 const responseModel_1 = require("../core/models/responseModel");
 const roleService = new role_service_1.default();
 class RoleController {
-    createRole(req, _res, next) {
+    createRole(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const role = yield roleService.createRole(req.body, next);
-                return new responseModel_1.ApiResponse(201, role, 'Role created successfully!', false);
+                return res
+                    .status(201)
+                    .send(new responseModel_1.ApiResponse(201, role, 'Role created successfully!', false));
             }
             catch (err) {
                 return next(err);
             }
         });
     }
-    getAll(req, _res, next) {
+    getAll(_req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const roles = yield roleService.getAll(next);
-                return new responseModel_1.ApiResponse(200, roles, 'Got all roles', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, roles, 'Got all roles', false));
             }
             catch (err) {
                 return next(err);
             }
         });
     }
-    getRoleById(req, _res, next) {
+    getRoleById(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
                 const role = yield roleService.getRoleById(Number(id), next);
-                return new responseModel_1.ApiResponse(200, role, 'Got the role', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, role, 'Got the role', false));
             }
             catch (err) {
                 return next(err);

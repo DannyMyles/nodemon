@@ -16,34 +16,40 @@ const image_service_1 = __importDefault(require("../services/image.service"));
 const responseModel_1 = require("../core/models/responseModel");
 const imageService = new image_service_1.default();
 class ImageController {
-    getImages(req, _res, next) {
+    getImages(_req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const images = yield imageService.getAll(next);
-                return new responseModel_1.ApiResponse(200, images, 'Got all images', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, images, 'Got all images', false));
             }
             catch (err) {
                 return next(err);
             }
         });
     }
-    getImageById(req, _res, next) {
+    getImageById(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
                 const image = yield imageService.getImageById(Number(id), next);
-                return new responseModel_1.ApiResponse(200, image, 'Got the image!', false);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, image, 'Got the image!', false));
             }
             catch (err) {
                 return next(err);
             }
         });
     }
-    addUserSubmittedImage(req, _res, next) {
+    addUserSubmittedImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const image = yield imageService.createImage(req['file'], next);
-                return new responseModel_1.ApiResponse(201, image, 'image uploaded successfully!', false);
+                return res
+                    .status(201)
+                    .send(new responseModel_1.ApiResponse(201, image, 'image uploaded successfully!', false));
             }
             catch (err) {
                 return next(err);

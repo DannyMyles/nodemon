@@ -11,9 +11,9 @@ const roleService = new RoleService();
 export default class UserController {
   public async getAll(
     _req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const users = await userService.getAll(next);
       if (users && users.length) {
@@ -33,7 +33,9 @@ export default class UserController {
               user['role'],
             ),
         );
-        return new ApiResponse(200, data, 'Got all users.', false);
+        return res
+          .status(200)
+          .send(new ApiResponse(200, data, 'Got all users.', false));
       }
     } catch (err) {
       return next(err);
@@ -42,9 +44,9 @@ export default class UserController {
 
   public async update(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const id = Number(req.params.id);
       const { user } = req.body;
@@ -56,17 +58,23 @@ export default class UserController {
           Object.keys(user).length
         )
       ) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
       const isUser = await userService.findById(id, next);
 
       if (!isUser) {
-        return ApiResponse.generateNotFoundErrorResponse('User');
+        return res
+          .status(404)
+          .send(ApiResponse.generateNotFoundErrorResponse('User'));
       }
 
       const data = await userService.update(id, user, next);
-      return new ApiResponse(200, data, 'User updated successfully', false);
+      return res
+        .status(200)
+        .send(new ApiResponse(200, data, 'User updated successfully', false));
     } catch (err) {
       return next(err);
     }
@@ -76,28 +84,31 @@ export default class UserController {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const id = Number(req.params.id);
 
       if (!id) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
       const isUser = await userService.findById(id, next);
       if (!isUser) {
-        return ApiResponse.generateNotFoundErrorResponse('User');
+        return res
+          .status(404)
+          .send(ApiResponse.generateNotFoundErrorResponse('User'));
       }
 
       await roleService.decrementRoleCount(isUser['role'], next);
 
       const deletedUser = await userService.delete(id, next);
-      return new ApiResponse(
-        200,
-        deletedUser,
-        'User deleted successfully',
-        false,
-      );
+      return res
+        .status(200)
+        .send(
+          new ApiResponse(200, deletedUser, 'User deleted successfully', false),
+        );
     } catch (err) {
       return next(err);
     }
@@ -105,22 +116,28 @@ export default class UserController {
 
   public async get(
     req: Request,
-    _res: Response,
+    res: Response,
     next: NextFunction,
-  ): Promise<ApiResponse | void> {
+  ): Promise<Response | void> {
     try {
       const id = Number(req.params.id);
 
       if (!id) {
-        return ApiResponse.generateBadRequestErrorResponse();
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
       const user = await userService.findById(id, next);
 
       if (!user) {
-        return ApiResponse.generateNotFoundErrorResponse('User');
+        return res
+          .status(404)
+          .send(ApiResponse.generateNotFoundErrorResponse('User'));
       }
-      return new ApiResponse(200, user, 'Got user', false);
+      return res
+        .status(200)
+        .send(new ApiResponse(200, user, 'Got user', false));
     } catch (err) {
       return next(err);
     }
