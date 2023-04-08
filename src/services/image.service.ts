@@ -5,12 +5,14 @@ import { NextFunction } from 'express';
 export default class ImageService {
   public async createImage(
     data: multer.Multer,
+    userId: number,
     next: NextFunction,
   ): Promise<Image | void> {
     try {
       return Image.create({
         type: data.mimetype,
         name: data.originalname,
+        userId
       });
     } catch (err) {
       return next(err);
@@ -36,4 +38,20 @@ export default class ImageService {
       return next(err);
     }
   }
+
+    // Getting image by user id
+    public async getImageByUserId(
+      userId: number,
+      next: NextFunction,
+    ): Promise<Image[] | void> {
+      try {
+        return Image.findAll({
+          where:{
+            userId
+          }
+        });
+      } catch (err) {
+        return next(err);
+      }
+    }
 }

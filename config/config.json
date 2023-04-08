@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "root",
-    "password": "dev12345",
-    "database": "gameapp",
+    "username": "agwenchez",
+    "password": "Agwenchez254",
+    "database": "games",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

@@ -43,10 +43,38 @@ class ImageController {
             }
         });
     }
+    getImageByUserId(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const images = yield imageService.getImageByUserId(Number(id), next);
+                return res
+                    .status(200)
+                    .send(new responseModel_1.ApiResponse(200, images, 'Images retrieved successfully', false));
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
     addUserSubmittedImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const image = yield imageService.createImage(req['file'], next);
+                const userId = parseInt(req.params.id);
+                // Get user data from res.locals
+                const user = res.locals.user;
+                console.log("Request", res.locals.user);
+                // Get image data
+                const imageData = req['file'];
+                // Check if the user exists
+                if (!user) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+                // Check if the image belongs to the user
+                if (userId !== user.id) {
+                    return res.status(403).json({ message: 'Forbidden' });
+                }
+                const image = yield imageService.createImage(req['file'], userId, next);
                 return res
                     .status(201)
                     .send(new responseModel_1.ApiResponse(201, image, 'image uploaded successfully!', false));

@@ -8,6 +8,7 @@ import roleRoutes from './routes/role.api';
 import userRoutes from './routes/user.api';
 import imageRoutes from './routes/image.api';
 import errorHandler from './core/errorHandler/errorHandler';
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 const corsOptions = {
@@ -34,6 +35,6 @@ app.use('/auth', authRoutes);
 app.use('/role', roleRoutes);
 app.use('/image', imageRoutes);
 errorHandler(app);
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}.`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });

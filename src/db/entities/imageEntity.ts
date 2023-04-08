@@ -14,6 +14,7 @@ class Image
 {
   type: string;
   name: string;
+  userId: number
 }
 
 Image.init(
@@ -23,6 +24,10 @@ Image.init(
     },
     name: {
       type: DataTypes.STRING,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {

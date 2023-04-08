@@ -10,7 +10,7 @@
     "lint:fix": "eslint src/** --fix --ext .ts,.js && tsc -p tsconfig.json",
     "prettify": "prettier --write .",
     "dev": "tsc && env-cmd -f .env nodemon ./dist/main.js",
-    "migration:init:role": "npx sequelize-cli model:generate --name role",
+    "migration:init:role": "npx sequelize-cli model:generate --name role --attributes roleId:integer,role:string,count:integer,createdAt:date,updatedAt:date",
     "migration:role:up": "npx sequelize-cli db:migrate",
     "migration:role:down": "npx sequelize-cli db:migrate:undo",
     "seeders:role:up": "npx sequelize-cli db:seed:all",
@@ -29,7 +29,8 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.1.2",
     "sequelize": "^6.28.0",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",

@@ -15,6 +15,10 @@ Image.init({
     name: {
         type: sequelize_1.DataTypes.STRING,
     },
+    userId: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+    },
 }, {
     sequelize: connect_db_1.sequelize,
     modelName: 'image',

@@ -13,6 +13,7 @@ const role_api_1 = __importDefault(require("./routes/role.api"));
 const user_api_1 = __importDefault(require("./routes/user.api"));
 const image_api_1 = __importDefault(require("./routes/image.api"));
 const errorHandler_1 = __importDefault(require("./core/errorHandler/errorHandler"));
+const PORT = process.env.PORT || 8080;
 const app = (0, express_1.default)();
 const corsOptions = {
     origin: ['*'],
@@ -35,7 +36,7 @@ app.use('/auth', auth_api_1.default);
 app.use('/role', role_api_1.default);
 app.use('/image', image_api_1.default);
 (0, errorHandler_1.default)(app);
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}.`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
 });
 //# sourceMappingURL=main.js.map

@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 class JwtService {
     generateAccessToken(id, username, role, email) {
         return jsonwebtoken_1.default.sign({
@@ -12,12 +14,14 @@ class JwtService {
             role: role,
             email: email,
         }, process.env.JWT_SECRET, {
-            expiresIn: process.env.EXP_TIME,
+            expiresIn: '30min',
         });
     }
     verifyToken(token, next) {
         try {
-            return jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+            const verify = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+            console.log("Verify", verify);
+            return verify;
         }
         catch (err) {
             return next(err);

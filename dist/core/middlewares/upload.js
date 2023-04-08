@@ -28,7 +28,7 @@ function default_1() {
     });
     uploader = (0, multer_1.default)({
         storage: storage,
-        limits: { fileSize: 200000 },
+        limits: { fileSize: 200000000 },
     });
     return uploader;
 }

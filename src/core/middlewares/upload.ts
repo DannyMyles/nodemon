@@ -14,7 +14,7 @@ export default function (): multer.Multer {
   });
   uploader = multer({
     storage: storage,
-    limits: { fileSize: 200000 },
+    limits: { fileSize: 200000000 },
   });
   return uploader;
 }

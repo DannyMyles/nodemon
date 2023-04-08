@@ -12,9 +12,11 @@ class Role
   extends Model<InferAttributes<Role>, InferCreationAttributes<Role>>
   implements IRole
 {
-  roleId: number;
+  roleId: string;
   role: ROLE_TYPES;
   count: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 Role.init(
@@ -32,6 +34,16 @@ Role.init(
     count: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
       allowNull: false,
     },
   },
