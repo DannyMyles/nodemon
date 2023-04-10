@@ -13,10 +13,12 @@ const role_api_1 = __importDefault(require("./routes/role.api"));
 const user_api_1 = __importDefault(require("./routes/user.api"));
 const image_api_1 = __importDefault(require("./routes/image.api"));
 const errorHandler_1 = __importDefault(require("./core/errorHandler/errorHandler"));
-const PORT = process.env.PORT || 8080;
 const app = (0, express_1.default)();
+const logger = require('morgan');
+app.use(logger('dev'));
+const PORT = process.env.PORT || 8080;
 const corsOptions = {
-    origin: ['*'],
+    origin: ['http://localhost:3000'],
     credentials: true,
     optionSuccessStatus: 200,
 };

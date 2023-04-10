@@ -19,9 +19,7 @@ class JwtService {
     }
     verifyToken(token, next) {
         try {
-            const verify = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-            console.log("Verify", verify);
-            return verify;
+            return jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         }
         catch (err) {
             return next(err);

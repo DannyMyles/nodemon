@@ -61,7 +61,7 @@ export default class ImageController {
       
       // Get user data from res.locals
       const user = res.locals.user;
-      console.log("Request", res.locals.user)
+      // console.log("Request", res.locals.user)
 
 
       // Check if the user exists

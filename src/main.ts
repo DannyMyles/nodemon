@@ -8,11 +8,13 @@ import roleRoutes from './routes/role.api';
 import userRoutes from './routes/user.api';
 import imageRoutes from './routes/image.api';
 import errorHandler from './core/errorHandler/errorHandler';
+const app = express();
+const logger = require('morgan')
+app.use(logger('dev'))
 const PORT = process.env.PORT || 8080;
 
-const app = express();
 const corsOptions = {
-  origin: ['*'],
+  origin: ['http://localhost:3000'],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
