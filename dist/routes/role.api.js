@@ -12,6 +12,9 @@ const roleController = new role_controller_1.default();
 const router = (0, express_1.Router)();
 router.get('/', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), auth_1.verifyUser, roleController.getAll);
 router.get('/:id', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), auth_1.verifyUser, roleController.getRoleById);
-router.post('/', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), auth_1.verifyUser, roleController.createRole);
+router.post('/', 
+// permission([ROLE_TYPES.ADMIN]),
+// verifyUser,
+roleController.createRole);
 exports.default = router;
 //# sourceMappingURL=role.api.js.map

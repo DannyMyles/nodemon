@@ -14,12 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const imageEntity_1 = __importDefault(require("../db/entities/imageEntity"));
 class ImageService {
-    createImage(data, next) {
+    createImage(data, userId, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return imageEntity_1.default.create({
                     type: data.mimetype,
                     name: data.originalname,
+                    userId
                 });
             }
             catch (err) {
@@ -42,6 +43,21 @@ class ImageService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 return imageEntity_1.default.findByPk(imageId);
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
+    // Getting image by user id
+    getImageByUserId(userId, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return imageEntity_1.default.findAll({
+                    where: {
+                        userId
+                    }
+                });
             }
             catch (err) {
                 return next(err);

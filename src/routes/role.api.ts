@@ -21,8 +21,8 @@ router.get(
 );
 router.post(
   '/',
-  permission([ROLE_TYPES.ADMIN]),
-  verifyUser,
+  // permission([ROLE_TYPES.ADMIN]),
+  // verifyUser,
   roleController.createRole,
 );
 

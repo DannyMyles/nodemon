@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import { ROLE_TYPES } from '../utils/constants';
 import { IToken } from '../core/models/tokenModel';
 import { NextFunction } from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default class JwtService {
   public generateAccessToken(
@@ -19,7 +21,7 @@ export default class JwtService {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: process.env.EXP_TIME,
+        expiresIn: '30min',
       },
     );
   }

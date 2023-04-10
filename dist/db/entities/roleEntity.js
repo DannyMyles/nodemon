@@ -20,6 +20,16 @@ Role.init({
         defaultValue: 0,
         allowNull: false,
     },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        defaultValue: new Date(),
+        allowNull: false,
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        defaultValue: new Date(),
+        allowNull: false,
+    },
 }, {
     sequelize: connect_db_1.sequelize,
     modelName: 'role',

@@ -13,9 +13,11 @@ router.get(
   permission([ROLE_TYPES.ADMIN]),
   imageController.getImages,
 );
-router.get('/image/:id', imageController.getImageById);
+router.get('/single/:id',  verifyUser, imageController.getImageById);
+router.get('/user/:id',   verifyUser, imageController.getImageByUserId);
+
 router.post(
-  '/submit',
+  '/submit/:id',
   verifyUser,
   upload().single('file'),
   imageController.addUserSubmittedImage,
