@@ -52,6 +52,8 @@ export default class AuthController {
             user.roleId,
             user['role'].role,
           );
+          delete data.password
+          delete data.roleId
           return res
             .status(200)
             .send(
@@ -142,7 +144,9 @@ export default class AuthController {
           user.roleId,
           user['role'].role,
         );
-
+        delete data.password
+        delete data.roleId
+        
         await roleService.incrementRoleCount(role, next);
         return res
           .status(201)

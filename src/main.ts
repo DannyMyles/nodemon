@@ -29,7 +29,7 @@ app.use('/static', express.static('public/uploads'));
 
 sequelize
   .sync()
-  .then(() => 'Connected to DB!')
+  .then(() => console.log('Connected to DB!'))
   .catch((err) => console.log(err, 'DB ERROR!!!'));
 
 app.use('/user', userRoutes);

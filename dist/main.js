@@ -31,7 +31,7 @@ app.use(express_1.default.json());
 app.use('/static', express_1.default.static('public/uploads'));
 connect_db_1.sequelize
     .sync()
-    .then(() => 'Connected to DB!')
+    .then(() => console.log('Connected to DB!'))
     .catch((err) => console.log(err, 'DB ERROR!!!'));
 app.use('/user', user_api_1.default);
 app.use('/auth', auth_api_1.default);
