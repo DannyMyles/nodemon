@@ -5,39 +5,73 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
-import { IImage } from '../../core/models/imageModel';
+import { IGameImageModel } from '../../core/models/gameImageModel';
 import User from './userEntity';
 
 class Image
   extends Model<InferAttributes<Image>, InferCreationAttributes<Image>>
-  implements IImage
+  implements IGameImageModel
 {
-  type: string;
-  name: string;
-  userId: number
+  gameID: string;
+  image: string;
+  status: boolean;
+  prize: number;
+  difficulty: string;
+  dateAdded: Date;
+  dateUpdated: Date;
+  updatedBy: number;
+  parentCategoryID: string;
+  paidAmount: number;
 }
 
 Image.init(
   {
-    type: {
-      type: DataTypes.STRING,
+    gameID: {
+      type: DataTypes.UUIDV4,
+      allowNull: false,
     },
-    name: {
+    image: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
-    userId: {
+    status: {
+      type: DataTypes.BOOLEAN,
+    },
+    prize: {
+      type: DataTypes.INTEGER,
+    },
+    difficulty: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    dateAdded: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    dateUpdated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedBy: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    parentCategoryID: {
+      type: DataTypes.STRING,
+      // allowNull: false,
+    },
+    paidAmount: {
+      type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
-    modelName: 'image',
+    modelName: 'images',
     freezeTableName: true,
   },
 );
 
-Image.belongsTo(User);
-User.hasMany(Image);
+// Image.belongsTo(User);
+// User.hasMany(Image);
 
 export default Image;

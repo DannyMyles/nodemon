@@ -1,30 +1,53 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const connect_db_1 = require("../connect-db");
 const sequelize_1 = require("sequelize");
-const userEntity_1 = __importDefault(require("./userEntity"));
 class Image extends sequelize_1.Model {
 }
 Image.init({
-    type: {
-        type: sequelize_1.DataTypes.STRING,
+    gameID: {
+        type: sequelize_1.DataTypes.UUIDV4,
+        allowNull: false,
     },
-    name: {
+    image: {
         type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
     },
-    userId: {
+    status: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+    },
+    prize: {
+        type: sequelize_1.DataTypes.INTEGER,
+    },
+    difficulty: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    dateAdded: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false,
+    },
+    dateUpdated: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false,
+    },
+    updatedBy: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
+    parentCategoryID: {
+        type: sequelize_1.DataTypes.STRING,
+        // allowNull: false,
+    },
+    paidAmount: {
+        type: sequelize_1.DataTypes.INTEGER,
+    },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: 'image',
+    modelName: 'images',
     freezeTableName: true,
 });
-Image.belongsTo(userEntity_1.default);
-userEntity_1.default.hasMany(Image);
+// Image.belongsTo(User);
+// User.hasMany(Image);
 exports.default = Image;
 //# sourceMappingURL=imageEntity.js.map
