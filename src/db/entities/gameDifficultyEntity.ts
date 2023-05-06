@@ -17,6 +17,12 @@ class GameDifficulty
 {
   difficultyID: string;
   difficultyDescription: string;
+
+  static associate(models: any) {
+    GameDifficulty.hasMany(models.GameImageModel, {
+      foreignKey: 'difficultyID',
+    });
+  }
 }
 
 GameDifficulty.init(

@@ -1,9 +1,9 @@
 export interface IGameImageModel {
   gameID: string;
   image: string;
-  difficulty: string;
-  dateAdded: Date;
-  dateUpdated: Date;
+  difficultyID: string;
+  // dateAdded: Date;
+  // dateUpdated: Date;
   updatedBy: number;
   parentCategoryID: string;
   paidAmount: number;
@@ -15,9 +15,9 @@ export class gameImageModel implements IGameImageModel {
   constructor(
     public gameID: string,
     public image: string,
-    public difficulty: string,
-    public dateAdded: Date,
-    public dateUpdated: Date,
+    public difficultyID: string,
+    // public readonly dateAdded: Date,
+    // public readonly dateUpdated: Date,
     public updatedBy: number,
     public parentCategoryID: string,
     public paidAmount: number,
