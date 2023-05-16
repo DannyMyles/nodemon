@@ -1,11 +1,11 @@
 export interface IParentCategoryCountries {
-  parentCategoryID: string;
+  parentCategoryCountriesID: string;
   locale: string;
 }
 
 export class parentCategoryCountriesModel implements IParentCategoryCountries {
   constructor(
-    public parentCategoryID: string = '',
+    public parentCategoryCountriesID: string = '',
     public locale: string = '',
   ) {}
 }

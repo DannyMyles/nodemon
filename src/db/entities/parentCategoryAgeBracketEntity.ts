@@ -17,13 +17,14 @@ class ParentCategoryAgeBracket
 {
   from_age: string;
   to_age: string;
-  parentCategoryID: string;
+  parentCategoryAgeBracketID: string;
 }
 
 ParentCategoryAgeBracket.init(
   {
-    parentCategoryID: {
-      type: DataTypes.UUIDV4,
+    parentCategoryAgeBracketID: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
       references: {

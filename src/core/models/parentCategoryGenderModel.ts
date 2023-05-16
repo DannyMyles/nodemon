@@ -1,11 +1,11 @@
 export interface IParentCategoryGender {
-  parentCategoryID: string;
+  parentCategoryGenderID: string;
   gender: string;
 }
 
 export class parentCategoryGenderModel implements IParentCategoryGender {
   constructor(
-    public parentCategoryID: string = '',
+    public parentCategoryGenderID: string = '',
     public gender: string = '',
   ) {}
 }

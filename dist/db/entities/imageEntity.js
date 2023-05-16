@@ -1,53 +1,74 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const connect_db_1 = require("../connect-db");
-const sequelize_1 = require("sequelize");
-class Image extends sequelize_1.Model {
-}
-Image.init({
-    gameID: {
-        type: sequelize_1.DataTypes.UUIDV4,
-        allowNull: false,
-    },
-    image: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-    },
-    status: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-    },
-    prize: {
-        type: sequelize_1.DataTypes.INTEGER,
-    },
-    difficulty: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-    },
-    dateAdded: {
-        type: sequelize_1.DataTypes.DATE,
-        allowNull: false,
-    },
-    dateUpdated: {
-        type: sequelize_1.DataTypes.DATE,
-        allowNull: false,
-    },
-    updatedBy: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
-    },
-    parentCategoryID: {
-        type: sequelize_1.DataTypes.STRING,
-        // allowNull: false,
-    },
-    paidAmount: {
-        type: sequelize_1.DataTypes.INTEGER,
-    },
-}, {
-    sequelize: connect_db_1.sequelize,
-    modelName: 'images',
-    freezeTableName: true,
-});
-// Image.belongsTo(User);
-// User.hasMany(Image);
-exports.default = Image;
+// import { sequelize } from '../connect-db';
+// import {
+//   DataTypes,
+//   InferAttributes,
+//   InferCreationAttributes,
+//   Model,
+// } from 'sequelize';
+// import { IGameImageModel } from '../../core/models/gameImageModel';
+// import User from './userEntity';
+// class Image
+//   extends Model<InferAttributes<Image>, InferCreationAttributes<Image>>
+//   implements IGameImageModel
+// {
+//   gameID: string;
+//   image: string;
+//   status: boolean;
+//   prize: number;
+//   difficulty: string;
+//   dateAdded: Date;
+//   dateUpdated: Date;
+//   updatedBy: number;
+//   parentCategoryID: string;
+//   paidAmount: number;
+// }
+// Image.init(
+//   {
+//     gameID: {
+//       type: DataTypes.UUIDV4,
+//       allowNull: false,
+//     },
+//     image: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     status: {
+//       type: DataTypes.BOOLEAN,
+//     },
+//     prize: {
+//       type: DataTypes.INTEGER,
+//     },
+//     difficulty: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     dateAdded: {
+//       type: DataTypes.DATE,
+//       allowNull: false,
+//     },
+//     dateUpdated: {
+//       type: DataTypes.DATE,
+//       allowNull: false,
+//     },
+//     updatedBy: {
+//       type: DataTypes.INTEGER,
+//       allowNull: false,
+//     },
+//     parentCategoryID: {
+//       type: DataTypes.STRING,
+//       // allowNull: false,
+//     },
+//     paidAmount: {
+//       type: DataTypes.INTEGER,
+//     },
+//   },
+//   {
+//     sequelize,
+//     modelName: 'images',
+//     freezeTableName: true,
+//   },
+// );
+// // Image.belongsTo(User);
+// // User.hasMany(Image);
+// export default Image;
 //# sourceMappingURL=imageEntity.js.map

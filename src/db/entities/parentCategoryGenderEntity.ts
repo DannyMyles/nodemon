@@ -15,13 +15,14 @@ class ParentCategoryGender
   implements IParentCategoryGender
 {
   gender: string;
-  parentCategoryID: string;
+  parentCategoryGenderID: string;
 }
 
 ParentCategoryGender.init(
   {
-    parentCategoryID: {
-      type: DataTypes.UUIDV4,
+    parentCategoryGenderID: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -41,4 +42,13 @@ ParentCategoryGender.init(
     freezeTableName: true,
   },
 );
+
+// Sync the model with the database
+ParentCategoryGender.sync({ force: true })
+  .then(() => {
+    console.log('Table created successfully!');
+  })
+  .catch((error) => {
+    console.error('Error creating table:', error);
+  });
 export default ParentCategoryGender;

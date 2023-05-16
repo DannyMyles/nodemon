@@ -32,7 +32,7 @@ Role.init({
     },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: 'role',
+    modelName: 'roles',
     freezeTableName: true,
 });
 exports.default = Role;

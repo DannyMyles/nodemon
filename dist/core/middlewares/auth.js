@@ -21,15 +21,17 @@ function verifyUser(req, res, next) {
         try {
             const authHeader = req.header('authorization');
             if (!authHeader) {
-                return responseModel_1.ApiResponse.generateBearerInvalidErrorResponse();
+                // console.log('No authotization headers');
+                return responseModel_1.ApiResponse.generateNotAuthorizedErrorResponse();
             }
             const bearer = authHeader.split(' ');
             if (bearer[0].toLowerCase() !== 'bearer' ||
                 typeof bearer[1] === 'undefined') {
-                return responseModel_1.ApiResponse.generateBearerInvalidErrorResponse();
+                return responseModel_1.ApiResponse.generateNotAuthorizedErrorResponse();
             }
             const accessToken = bearer[1];
             if (!accessToken) {
+                // console.log('Noo access token');
                 return responseModel_1.ApiResponse.generateNotAuthorizedErrorResponse();
             }
             const user = jwtService.verifyToken(accessToken, next);

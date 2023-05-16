@@ -1,13 +1,13 @@
+import { GAME_STATUSES } from '../../utils/constants';
+
 export interface IGameImageModel {
   gameID: string;
   image: string;
   difficultyID: string;
-  // dateAdded: Date;
-  // dateUpdated: Date;
   updatedBy: number;
   parentCategoryID: string;
   paidAmount: number;
-  status: boolean;
+  status: GAME_STATUSES;
   prize: number;
 }
 
@@ -16,12 +16,10 @@ export class gameImageModel implements IGameImageModel {
     public gameID: string,
     public image: string,
     public difficultyID: string,
-    // public readonly dateAdded: Date,
-    // public readonly dateUpdated: Date,
     public updatedBy: number,
     public parentCategoryID: string,
     public paidAmount: number,
-    public status: boolean,
+    public status: GAME_STATUSES,
     public prize: number,
   ) {}
 }

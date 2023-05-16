@@ -13,7 +13,8 @@ export async function verifyUser(
     const authHeader = req.header('authorization');
 
     if (!authHeader) {
-      return ApiResponse.generateBearerInvalidErrorResponse();
+      // console.log('No authotization headers');
+      return ApiResponse.generateNotAuthorizedErrorResponse();
     }
 
     const bearer = authHeader.split(' ');
@@ -22,11 +23,12 @@ export async function verifyUser(
       bearer[0].toLowerCase() !== 'bearer' ||
       typeof bearer[1] === 'undefined'
     ) {
-      return ApiResponse.generateBearerInvalidErrorResponse();
+      return ApiResponse.generateNotAuthorizedErrorResponse();
     }
     const accessToken = bearer[1];
 
     if (!accessToken) {
+      // console.log('Noo access token');
       return ApiResponse.generateNotAuthorizedErrorResponse();
     }
     const user = jwtService.verifyToken(accessToken, next);

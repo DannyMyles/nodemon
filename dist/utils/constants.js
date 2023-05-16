@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GENDER_TYPES = exports.ROLE_TYPES = void 0;
+exports.GAME_STATUSES = exports.GENDER_TYPES = exports.ROLE_TYPES = void 0;
 var ROLE_TYPES;
 (function (ROLE_TYPES) {
     ROLE_TYPES["ADMIN"] = "admin";
@@ -11,4 +11,9 @@ var GENDER_TYPES;
     GENDER_TYPES["MALE"] = "male";
     GENDER_TYPES["FEMALE"] = "female";
 })(GENDER_TYPES = exports.GENDER_TYPES || (exports.GENDER_TYPES = {}));
+var GAME_STATUSES;
+(function (GAME_STATUSES) {
+    GAME_STATUSES["ACCEPTED"] = "accepted";
+    GAME_STATUSES["REJECTED"] = "rejected";
+})(GAME_STATUSES = exports.GAME_STATUSES || (exports.GAME_STATUSES = {}));
 //# sourceMappingURL=constants.js.map

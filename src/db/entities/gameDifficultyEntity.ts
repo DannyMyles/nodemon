@@ -17,18 +17,13 @@ class GameDifficulty
 {
   difficultyID: string;
   difficultyDescription: string;
-
-  static associate(models: any) {
-    GameDifficulty.hasMany(models.GameImageModel, {
-      foreignKey: 'difficultyID',
-    });
-  }
 }
 
 GameDifficulty.init(
   {
     difficultyID: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
@@ -43,4 +38,13 @@ GameDifficulty.init(
     freezeTableName: true,
   },
 );
+
+// Sync the model with the database
+// GameDifficulty.sync({ force: true })
+//   .then(() => {
+//     console.log('Table created successfully!');
+//   })
+//   .catch((error) => {
+//     console.error('Error creating table:', error);
+//   });
 export default GameDifficulty;

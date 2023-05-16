@@ -1,5 +1,4 @@
 import { IGameImageModel } from '../../core/models/gameImageModel';
-import { parentCategoryModel } from '../../core/models/parentCategoryModel';
 import { sequelize } from '../connect-db';
 import {
   DataTypes,
@@ -8,6 +7,8 @@ import {
   Model,
 } from 'sequelize';
 import ParentCategory from './parentCategoryEntity';
+import GameDifficulty from './gameDifficultyEntity';
+import { GAME_STATUSES } from '../../utils/constants';
 
 class GameImage
   extends Model<InferAttributes<GameImage>, InferCreationAttributes<GameImage>>
@@ -16,23 +17,20 @@ class GameImage
   gameID: string;
   image: string;
   difficultyID: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   updatedBy: number;
   parentCategoryID: string;
   paidAmount: number;
-  status: boolean;
+  status: GAME_STATUSES;
   prize: number;
-
-  static associate(models: any) {
-    GameImage.belongsTo(models.GameDifficulty, { foreignKey: 'difficultyID' });
-  }
 }
 
 GameImage.init(
   {
     gameID: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
@@ -41,49 +39,56 @@ GameImage.init(
       allowNull: false,
     },
     difficultyID: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.UUID,
+      allowNull: true,
     },
-    // createdAt: {
-    //   type: DataTypes.DATE,
-    // },
-    // updatedAt: {
-    //   type: DataTypes.DATE,
-    // },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date(),
+    },
     updatedBy: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     parentCategoryID: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: 'parent_categories',
-        key: 'parentCategoryID',
-      },
+      type: DataTypes.UUID,
+      allowNull: true,
     },
     paidAmount: {
       type: DataTypes.INTEGER,
+      allowNull: true,
     },
     status: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.ENUM('accepted', 'rejected'),
+      allowNull: true,
     },
     prize: {
       type: DataTypes.INTEGER,
+      allowNull: true,
     },
   },
   {
     sequelize,
     modelName: 'game_images',
     freezeTableName: true,
-    timestamps: true,
-    // paranoid: true,
   },
 );
 
+GameDifficulty.hasMany(GameImage, {
+  foreignKey: 'difficultyID',
+});
+GameImage.belongsTo(GameDifficulty, {
+  foreignKey: 'difficultyID',
+});
+ParentCategory.hasMany(GameImage, {
+  foreignKey: 'parentCategoryID',
+});
 GameImage.belongsTo(ParentCategory, {
   foreignKey: 'parentCategoryID',
-  as: 'parentCategory',
 });
 
 export default GameImage;

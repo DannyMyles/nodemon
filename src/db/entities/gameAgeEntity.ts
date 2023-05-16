@@ -20,7 +20,8 @@ class GameAge
 GameAge.init(
   {
     gameID: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
@@ -39,4 +40,13 @@ GameAge.init(
     freezeTableName: true,
   },
 );
+
+// Sync the model with the database
+// GameAge.sync({ force: true })
+//   .then(() => {
+//     console.log('Table created successfully!');
+//   })
+//   .catch((error) => {
+//     console.error('Error creating table:', error);
+//   });
 export default GameAge;
