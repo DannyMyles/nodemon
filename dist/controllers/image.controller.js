@@ -59,12 +59,13 @@ class ImageController {
     }
     addUserSubmittedImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('File', req['file']);
             try {
                 const userId = parseInt(req.params.id);
-                console.log('User ID', userId);
+                // console.log('User ID', userId);
                 // Get user data from res.locals
                 const user = res.locals.user;
-                console.log('Request', res.locals.user);
+                // console.log('Request', res.locals.user);
                 // Check if the user exists
                 if (!user) {
                     return res.status(404).json({ message: 'User not found' });
@@ -77,6 +78,26 @@ class ImageController {
                 return res
                     .status(201)
                     .send(new responseModel_1.ApiResponse(201, image, 'image uploaded successfully!', false));
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
+    update(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                if (!id) {
+                    return res
+                        .status(400)
+                        .send(responseModel_1.ApiResponse.generateBadRequestErrorResponse());
+                }
+                const data = yield imageService.update(id, req.body, next);
+                return res
+                    .status(200)
+                    .json({ message: 'Image updated successfully', data });
+                // .send(new ApiResponse(200, data, 'User updated successfully', false));
             }
             catch (err) {
                 return next(err);

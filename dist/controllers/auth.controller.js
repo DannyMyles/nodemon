@@ -98,6 +98,8 @@ class AuthController {
                 if (user) {
                     const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.email);
                     const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
+                    delete data.password;
+                    delete data.roleId;
                     yield roleService.incrementRoleCount(role, next);
                     return res
                         .status(201)

@@ -10,12 +10,19 @@ const imageController = new ImageController();
 
 router.get(
   '/images',
+  verifyUser,
   permission([ROLE_TYPES.ADMIN]),
   imageController.getImages,
 );
 router.get('/single/:id', verifyUser, imageController.getImageById);
 router.get('/user/:id', verifyUser, imageController.getImageByUserId);
-
+router.put(
+  '/:id',
+  verifyUser,
+  upload().single('file'),
+  permission([ROLE_TYPES.ADMIN]),
+  imageController.update,
+);
 router.post(
   '/submit/:id',
   verifyUser,

@@ -1,16 +1,18 @@
 import Image from '../db/entities/gameImageEntity';
 import multer from 'multer';
 import { NextFunction } from 'express';
+import { gameImageModel } from '../core/models/gameImageModel';
 
 export default class ImageService {
   public async createImage(
-    data: multer.Multer,
+    image: multer.Multer,
     userId: number,
     next: NextFunction,
   ): Promise<Image | void> {
+    console.log('Data', image);
     try {
       return Image.create({
-        image: data.originalname,
+        image: image.originalname,
         updatedBy: userId,
       });
     } catch (err) {
@@ -49,6 +51,22 @@ export default class ImageService {
           updatedBy: userId,
         },
       });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  // update image
+  public async update(
+    gameID: string,
+    data: Partial<gameImageModel>,
+    next: NextFunction,
+  ): Promise<Image | void> {
+    console.log('data', data);
+    console.log('gameID', gameID);
+    try {
+      await Image.update({ ...data }, { where: { gameID } });
+      return Image.findByPk(gameID);
     } catch (err) {
       return next(err);
     }

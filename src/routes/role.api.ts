@@ -9,20 +9,20 @@ const router = Router();
 
 router.get(
   '/',
-  permission([ROLE_TYPES.ADMIN]),
   verifyUser,
+  permission([ROLE_TYPES.ADMIN]),
   roleController.getAll,
 );
 router.get(
   '/:id',
-  permission([ROLE_TYPES.ADMIN]),
   verifyUser,
+  permission([ROLE_TYPES.ADMIN]),
   roleController.getRoleById,
 );
 router.post(
   '/',
-  // permission([ROLE_TYPES.ADMIN]),
-  // verifyUser,
+  verifyUser,
+  permission([ROLE_TYPES.ADMIN]),
   roleController.createRole,
 );
 

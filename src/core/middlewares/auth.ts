@@ -18,7 +18,6 @@ export async function verifyUser(
     }
 
     const bearer = authHeader.split(' ');
-
     if (
       bearer[0].toLowerCase() !== 'bearer' ||
       typeof bearer[1] === 'undefined'

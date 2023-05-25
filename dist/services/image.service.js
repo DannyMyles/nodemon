@@ -63,6 +63,20 @@ class ImageService {
             }
         });
     }
+    // update image
+    update(gameID, data, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('data', data);
+            console.log('gameID', gameID);
+            try {
+                yield gameImageEntity_1.default.update(Object.assign({}, data), { where: { gameID } });
+                return gameImageEntity_1.default.findByPk(gameID);
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
 }
 exports.default = ImageService;
 //# sourceMappingURL=image.service.js.map
