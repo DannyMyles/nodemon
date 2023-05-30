@@ -19,7 +19,7 @@ const logger = require('morgan');
 app.use(logger('dev'));
 const PORT = process.env.PORT || 8080;
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5175'],
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };

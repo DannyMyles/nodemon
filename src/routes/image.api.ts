@@ -19,7 +19,6 @@ router.get('/user/:id', verifyUser, imageController.getImageByUserId);
 router.put(
   '/:id',
   verifyUser,
-  upload().single('file'),
   permission([ROLE_TYPES.ADMIN]),
   imageController.update,
 );
