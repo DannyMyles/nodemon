@@ -41,9 +41,17 @@ class AuthController {
                     }
                     else {
                         const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.password);
+<<<<<<< HEAD
                         const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
                         delete data.password;
                         delete data.roleId;
+=======
+                        const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, 
+                        // user.password,
+                        accessToken, 
+                        // user.roleId,
+                        user['role'].role);
+>>>>>>> b8073fa (image upload endpoint fine tunning)
                         return res
                             .status(200)
                             .send(new responseModel_1.ApiResponse(200, data, 'User logged in successfully!', false));

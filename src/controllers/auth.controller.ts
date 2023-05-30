@@ -146,6 +146,7 @@ export default class AuthController {
         );
         delete data.password;
         delete data.roleId;
+
         await roleService.incrementRoleCount(role, next);
         return res
           .status(201)
