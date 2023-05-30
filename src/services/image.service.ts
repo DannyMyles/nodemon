@@ -9,7 +9,7 @@ export default class ImageService {
     userId: number,
     next: NextFunction,
   ): Promise<Image | void> {
-    console.log('Data', image);
+    // console.log('Data', image);
     try {
       return Image.create({
         image: image.originalname,
@@ -62,8 +62,8 @@ export default class ImageService {
     data: Partial<gameImageModel>,
     next: NextFunction,
   ): Promise<Image | void> {
-    console.log('data', data);
-    console.log('gameID', gameID);
+    // console.log('data', data);
+    // console.log('gameID', gameID);
     try {
       await Image.update({ ...data }, { where: { gameID } });
       return Image.findByPk(gameID);

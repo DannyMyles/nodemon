@@ -1,5 +1,4 @@
 import { IGameAge } from '../../core/models/gameAgeModel';
-import { IGameGender } from '../../core/models/gameGenderModel';
 import { sequelize } from '../connect-db';
 import {
   DataTypes,
@@ -7,11 +6,13 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
+import GameImage from './gameImageEntity';
 
 class GameAge
   extends Model<InferAttributes<GameAge>, InferCreationAttributes<GameAge>>
   implements IGameAge
 {
+  age_bracketID: string;
   from_age: string;
   to_age: string;
   gameID: string;
@@ -19,11 +20,15 @@ class GameAge
 
 GameAge.init(
   {
-    gameID: {
+    age_bracketID: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
+    },
+    gameID: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     from_age: {
       type: DataTypes.STRING,
@@ -41,12 +46,10 @@ GameAge.init(
   },
 );
 
-// Sync the model with the database
-// GameAge.sync({ force: true })
-//   .then(() => {
-//     console.log('Table created successfully!');
-//   })
-//   .catch((error) => {
-//     console.error('Error creating table:', error);
-//   });
+GameImage.hasMany(GameAge, {
+  foreignKey: 'gameID',
+});
+GameAge.belongsTo(GameImage, {
+  foreignKey: 'gameID',
+});
 export default GameAge;

@@ -6,15 +6,17 @@ import multer from 'multer';
 
 export default class ParentCategoryService {
   public async createParentCategory(
-    data: Omit<parentCategoryModel, 'parentCategoryID'>,
+    // data: { categoryName: string; enabled: boolean },
+    data: any,
     image: multer.Multer,
     next: NextFunction,
   ): Promise<ParentCategory | void> {
-    console.log('Image', image);
+    // console.log('Image', image);
+    // console.log('Data', data);
     try {
       const newParentCategory = await ParentCategory.create({
         categoryName: data.categoryName,
-        image,
+        image: image.originalname,
         enabled: data.enabled,
       });
       //   console.log('Blah', newParentCategory);

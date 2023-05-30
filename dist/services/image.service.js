@@ -14,11 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const gameImageEntity_1 = __importDefault(require("../db/entities/gameImageEntity"));
 class ImageService {
-    createImage(data, userId, next) {
+    createImage(image, userId, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            // console.log('Data', image);
             try {
                 return gameImageEntity_1.default.create({
-                    image: data.originalname,
+                    image: image.originalname,
                     updatedBy: userId,
                 });
             }
@@ -66,8 +67,8 @@ class ImageService {
     // update image
     update(gameID, data, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('data', data);
-            console.log('gameID', gameID);
+            // console.log('data', data);
+            // console.log('gameID', gameID);
             try {
                 yield gameImageEntity_1.default.update(Object.assign({}, data), { where: { gameID } });
                 return gameImageEntity_1.default.findByPk(gameID);

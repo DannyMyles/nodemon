@@ -1,5 +1,4 @@
 import { IGameDifficulty } from '../../core/models/gameDifficultyModel';
-import { IParentCategoryGender } from '../../core/models/parentCategoryGenderModel';
 import { sequelize } from '../connect-db';
 import {
   DataTypes,

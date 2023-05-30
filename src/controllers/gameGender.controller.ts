@@ -1,20 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import { ApiResponse } from '../core/models/responseModel';
-import ParentCategoryService from '../services/parentCategory.service';
+import GameGenderService from '../services/gameGender.service';
 
-const parentCategoryService = new ParentCategoryService();
+const gameGenderService = new GameGenderService();
 
-export default class ParentCategoryController {
-  public async createParentCategory(
+export default class GameController {
+  public async createGameDifficulty(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const { categoryName, enabled } = req.params;
-      const parentCategory = await parentCategoryService.createParentCategory(
-        req.params,
-        req['file'],
+      const gameDifficulty = await gameGenderService.createGameGender(
+        req.body,
         next,
       );
       return res
@@ -22,8 +20,8 @@ export default class ParentCategoryController {
         .send(
           new ApiResponse(
             201,
-            parentCategory,
-            'Parent Category created successfully!',
+            gameDifficulty,
+            'Game gender created successfully!',
             false,
           ),
         );
@@ -36,17 +34,13 @@ export default class ParentCategoryController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
+    // console.log('Here I am , where are you?');
     try {
-      const parentCategory = await parentCategoryService.getAll(next);
+      const gameGenders = await gameGenderService.getAll(next);
       return res
         .status(200)
         .send(
-          new ApiResponse(
-            200,
-            parentCategory,
-            'Got all parent categories.',
-            false,
-          ),
+          new ApiResponse(200, gameGenders, 'Got all game genders.', false),
         );
       //   }
     } catch (err) {
@@ -67,10 +61,10 @@ export default class ParentCategoryController {
           .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
-      const data = await parentCategoryService.update(id, req.body, next);
+      const data = await gameGenderService.update(id, req.body, next);
       return res
         .status(200)
-        .json({ message: 'Parent category updated successfully', data });
+        .json({ message: 'Game gender updated successfully', data });
     } catch (err) {
       return next(err);
     }
@@ -90,17 +84,14 @@ export default class ParentCategoryController {
           .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
-      const deletedGameDifficulty = await parentCategoryService.delete(
-        id,
-        next,
-      );
+      const deletedGameGender = await gameGenderService.delete(id, next);
       return res
         .status(200)
         .send(
           new ApiResponse(
             200,
-            deletedGameDifficulty,
-            'Parent category deleted successfully',
+            deletedGameGender,
+            'Game gender deleted successfully',
             false,
           ),
         );
@@ -123,23 +114,16 @@ export default class ParentCategoryController {
           .send(ApiResponse.generateBadRequestErrorResponse());
       }
 
-      const parentCategory = await parentCategoryService.findById(id, next);
+      const gameGender = await gameGenderService.findById(id, next);
 
-      if (!parentCategory) {
+      if (!gameGender) {
         return res
           .status(404)
-          .send(ApiResponse.generateNotFoundErrorResponse('parentCategory'));
+          .send(ApiResponse.generateNotFoundErrorResponse('gameGender'));
       }
       return res
         .status(200)
-        .send(
-          new ApiResponse(
-            200,
-            parentCategory,
-            'Got parent category successfully',
-            false,
-          ),
-        );
+        .send(new ApiResponse(200, gameGender, 'Got gender', false));
     } catch (err) {
       return next(err);
     }

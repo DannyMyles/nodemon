@@ -6,6 +6,7 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
+import GameImage from './gameImageEntity';
 
 class GameGender
   extends Model<
@@ -14,17 +15,22 @@ class GameGender
   >
   implements IGameGender
 {
+  genderID: string;
   gameID: string;
   gender: string;
 }
 
 GameGender.init(
   {
-    gameID: {
+    genderID: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
+    },
+    gameID: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
     gender: {
       type: DataTypes.STRING,
@@ -37,6 +43,13 @@ GameGender.init(
     freezeTableName: true,
   },
 );
+
+GameImage.hasMany(GameGender, {
+  foreignKey: 'gameID',
+});
+GameGender.belongsTo(GameImage, {
+  foreignKey: 'gameID',
+});
 
 // Sync the model with the database
 // GameGender.sync({ force: true })

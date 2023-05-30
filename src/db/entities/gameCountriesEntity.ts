@@ -8,6 +8,7 @@ import {
   InferCreationAttributes,
   Model,
 } from 'sequelize';
+import GameImage from './gameImageEntity';
 
 class GameCountries
   extends Model<
@@ -16,12 +17,19 @@ class GameCountries
   >
   implements IGameCountries
 {
+  countryID: string;
   gameID: string;
   locale: string;
 }
 
 GameCountries.init(
   {
+    countryID: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     gameID: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -40,12 +48,10 @@ GameCountries.init(
   },
 );
 
-// Sync the model with the database
-// GameCountries.sync({ force: true })
-//   .then(() => {
-//     console.log('Table created successfully!');
-//   })
-//   .catch((error) => {
-//     console.error('Error creating table:', error);
-//   });
+GameImage.hasMany(GameCountries, {
+  foreignKey: 'gameID',
+});
+GameCountries.belongsTo(GameImage, {
+  foreignKey: 'gameID',
+});
 export default GameCountries;

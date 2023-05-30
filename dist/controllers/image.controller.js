@@ -59,7 +59,7 @@ class ImageController {
     }
     addUserSubmittedImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('File', req['file']);
+            // console.log('File', req['file']);
             try {
                 const userId = parseInt(req.params.id);
                 // console.log('User ID', userId);

@@ -14,6 +14,7 @@ const user_api_1 = __importDefault(require("./routes/user.api"));
 const image_api_1 = __importDefault(require("./routes/image.api"));
 const gameDifficulty_api_1 = __importDefault(require("./routes/gameDifficulty.api"));
 const parentCategory_api_1 = __importDefault(require("./routes/parentCategory.api"));
+const gameGender_api_1 = __importDefault(require("./routes/gameGender.api"));
 const errorHandler_1 = __importDefault(require("./core/errorHandler/errorHandler"));
 const app = (0, express_1.default)();
 const logger = require('morgan');
@@ -41,6 +42,7 @@ app.use('/role', role_api_1.default);
 app.use('/image', image_api_1.default);
 app.use('/difficulty_levels', gameDifficulty_api_1.default);
 app.use('/parent_categories', parentCategory_api_1.default);
+app.use('/game_genders', gameGender_api_1.default);
 (0, errorHandler_1.default)(app);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);

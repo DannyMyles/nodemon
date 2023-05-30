@@ -9,6 +9,9 @@ import userRoutes from './routes/user.api';
 import imageRoutes from './routes/image.api';
 import gameDifficultyRoutes from './routes/gameDifficulty.api';
 import parentCategoryRoutes from './routes/parentCategory.api';
+import gameGenderRoutes from './routes/gameGender.api';
+import gameAgeRoutes from './routes/gameAgeBracket.api';
+import gameLocaleRoutes from './routes/gameCountries.api';
 import errorHandler from './core/errorHandler/errorHandler';
 const app = express();
 const logger = require('morgan');
@@ -40,6 +43,9 @@ app.use('/role', roleRoutes);
 app.use('/image', imageRoutes);
 app.use('/difficulty_levels', gameDifficultyRoutes);
 app.use('/parent_categories', parentCategoryRoutes);
+app.use('/game_genders', gameGenderRoutes);
+app.use('/game_ages', gameAgeRoutes);
+app.use('/game_locales', gameLocaleRoutes);
 
 errorHandler(app);
 app.listen(PORT, () => {

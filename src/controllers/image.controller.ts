@@ -58,7 +58,7 @@ export default class ImageController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    console.log('File', req['file']);
+    // console.log('File', req['file']);
     try {
       const userId = parseInt(req.params.id);
       // console.log('User ID', userId);
