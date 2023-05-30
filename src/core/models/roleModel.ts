@@ -14,6 +14,6 @@ export class RoleModel implements IRole {
     public role: ROLE_TYPES = ROLE_TYPES.USER,
     public count: number = 0,
     public createdAt: Date = new Date(),
-    public updatedAt: Date = new Date()
+    public updatedAt: Date = new Date(),
   ) {}
 }

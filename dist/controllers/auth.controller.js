@@ -41,7 +41,11 @@ class AuthController {
                     }
                     else {
                         const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.password);
-                        const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
+                        const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, 
+                        // user.password,
+                        accessToken, 
+                        // user.roleId,
+                        user['role'].role);
                         return res
                             .status(200)
                             .send(new responseModel_1.ApiResponse(200, data, 'User logged in successfully!', false));
@@ -96,6 +100,8 @@ class AuthController {
                 if (user) {
                     const accessToken = jwtService.generateAccessToken(user.id, user.username, user['role'].role, user.email);
                     const data = new userModel_1.UserModel(user.id, user.fullname, user.lastname, user.email, user.birthdate, user.gender, user.username, user.password, accessToken, user.roleId, user['role'].role);
+                    delete data.password;
+                    delete data.roleId;
                     yield roleService.incrementRoleCount(role, next);
                     return res
                         .status(201)

@@ -7,7 +7,7 @@ export default function (roles: Array<string>) {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const role = res.locals.user.role as string;
+    const role = res.locals.user && (res.locals.user.role as string);
     if (roles.includes(role)) {
       return next();
     }

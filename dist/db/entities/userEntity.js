@@ -76,7 +76,7 @@ User.init({
     },
 }, {
     sequelize: connect_db_1.sequelize,
-    modelName: 'user',
+    modelName: 'users',
     freezeTableName: true,
 });
 roleEntity_1.default.hasMany(User, {

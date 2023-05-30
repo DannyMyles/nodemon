@@ -1,18 +1,19 @@
-import Image from '../db/entities/imageEntity';
+import Image from '../db/entities/gameImageEntity';
 import multer from 'multer';
 import { NextFunction } from 'express';
+import { gameImageModel } from '../core/models/gameImageModel';
 
 export default class ImageService {
   public async createImage(
-    data: multer.Multer,
+    image: multer.Multer,
     userId: number,
     next: NextFunction,
   ): Promise<Image | void> {
+    // console.log('Data', image);
     try {
       return Image.create({
-        type: data.mimetype,
-        name: data.originalname,
-        userId
+        image: image.originalname,
+        updatedBy: userId,
       });
     } catch (err) {
       return next(err);
@@ -29,29 +30,45 @@ export default class ImageService {
 
   // Getting image by id
   public async getImageById(
-    imageId: number,
+    gameID: string,
     next: NextFunction,
   ): Promise<Image | void> {
     try {
-      return Image.findByPk(imageId);
+      return Image.findByPk(gameID);
     } catch (err) {
       return next(err);
     }
   }
 
-    // Getting image by user id
-    public async getImageByUserId(
-      userId: number,
-      next: NextFunction,
-    ): Promise<Image[] | void> {
-      try {
-        return Image.findAll({
-          where:{
-            userId
-          }
-        });
-      } catch (err) {
-        return next(err);
-      }
+  // Getting image by user id
+  public async getImageByUserId(
+    userId: number,
+    next: NextFunction,
+  ): Promise<Image[] | void> {
+    try {
+      return Image.findAll({
+        where: {
+          updatedBy: userId,
+        },
+      });
+    } catch (err) {
+      return next(err);
     }
+  }
+
+  // update image
+  public async update(
+    gameID: string,
+    data: Partial<gameImageModel>,
+    next: NextFunction,
+  ): Promise<Image | void> {
+    // console.log('data', data);
+    // console.log('gameID', gameID);
+    try {
+      await Image.update({ ...data }, { where: { gameID } });
+      return Image.findByPk(gameID);
+    } catch (err) {
+      return next(err);
+    }
+  }
 }

@@ -12,15 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const imageEntity_1 = __importDefault(require("../db/entities/imageEntity"));
+const gameImageEntity_1 = __importDefault(require("../db/entities/gameImageEntity"));
 class ImageService {
-    createImage(data, userId, next) {
+    createImage(image, userId, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            // console.log('Data', image);
             try {
-                return imageEntity_1.default.create({
-                    type: data.mimetype,
-                    name: data.originalname,
-                    userId
+                return gameImageEntity_1.default.create({
+                    image: image.originalname,
+                    updatedBy: userId,
                 });
             }
             catch (err) {
@@ -31,7 +31,7 @@ class ImageService {
     getAll(next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return imageEntity_1.default.findAll();
+                return gameImageEntity_1.default.findAll();
             }
             catch (err) {
                 return next(err);
@@ -39,10 +39,10 @@ class ImageService {
         });
     }
     // Getting image by id
-    getImageById(imageId, next) {
+    getImageById(gameID, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return imageEntity_1.default.findByPk(imageId);
+                return gameImageEntity_1.default.findByPk(gameID);
             }
             catch (err) {
                 return next(err);
@@ -53,11 +53,25 @@ class ImageService {
     getImageByUserId(userId, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return imageEntity_1.default.findAll({
+                return gameImageEntity_1.default.findAll({
                     where: {
-                        userId
-                    }
+                        updatedBy: userId,
+                    },
                 });
+            }
+            catch (err) {
+                return next(err);
+            }
+        });
+    }
+    // update image
+    update(gameID, data, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // console.log('data', data);
+            // console.log('gameID', gameID);
+            try {
+                yield gameImageEntity_1.default.update(Object.assign({}, data), { where: { gameID } });
+                return gameImageEntity_1.default.findByPk(gameID);
             }
             catch (err) {
                 return next(err);

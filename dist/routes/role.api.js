@@ -10,11 +10,8 @@ const permission_1 = __importDefault(require("../core/middlewares/permission"));
 const constants_1 = require("../utils/constants");
 const roleController = new role_controller_1.default();
 const router = (0, express_1.Router)();
-router.get('/', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), auth_1.verifyUser, roleController.getAll);
-router.get('/:id', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), auth_1.verifyUser, roleController.getRoleById);
-router.post('/', 
-// permission([ROLE_TYPES.ADMIN]),
-// verifyUser,
-roleController.createRole);
+router.get('/', auth_1.verifyUser, (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), roleController.getAll);
+router.get('/:id', auth_1.verifyUser, (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), roleController.getRoleById);
+router.post('/', auth_1.verifyUser, (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), roleController.createRole);
 exports.default = router;
 //# sourceMappingURL=role.api.js.map

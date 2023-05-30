@@ -11,9 +11,10 @@ const permission_1 = __importDefault(require("../core/middlewares/permission"));
 const constants_1 = require("../utils/constants");
 const router = (0, express_1.Router)();
 const imageController = new image_controller_1.default();
-router.get('/images', (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), imageController.getImages);
+router.get('/images', auth_1.verifyUser, (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), imageController.getImages);
 router.get('/single/:id', auth_1.verifyUser, imageController.getImageById);
 router.get('/user/:id', auth_1.verifyUser, imageController.getImageByUserId);
+router.put('/:id', auth_1.verifyUser, (0, upload_1.default)().single('file'), (0, permission_1.default)([constants_1.ROLE_TYPES.ADMIN]), imageController.update);
 router.post('/submit/:id', auth_1.verifyUser, (0, upload_1.default)().single('file'), imageController.addUserSubmittedImage);
 exports.default = router;
 //# sourceMappingURL=image.api.js.map

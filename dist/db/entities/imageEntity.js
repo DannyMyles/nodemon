@@ -1,30 +1,74 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const connect_db_1 = require("../connect-db");
-const sequelize_1 = require("sequelize");
-const userEntity_1 = __importDefault(require("./userEntity"));
-class Image extends sequelize_1.Model {
-}
-Image.init({
-    type: {
-        type: sequelize_1.DataTypes.STRING,
-    },
-    name: {
-        type: sequelize_1.DataTypes.STRING,
-    },
-    userId: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
-    },
-}, {
-    sequelize: connect_db_1.sequelize,
-    modelName: 'image',
-    freezeTableName: true,
-});
-Image.belongsTo(userEntity_1.default);
-userEntity_1.default.hasMany(Image);
-exports.default = Image;
+// import { sequelize } from '../connect-db';
+// import {
+//   DataTypes,
+//   InferAttributes,
+//   InferCreationAttributes,
+//   Model,
+// } from 'sequelize';
+// import { IGameImageModel } from '../../core/models/gameImageModel';
+// import User from './userEntity';
+// class Image
+//   extends Model<InferAttributes<Image>, InferCreationAttributes<Image>>
+//   implements IGameImageModel
+// {
+//   gameID: string;
+//   image: string;
+//   status: boolean;
+//   prize: number;
+//   difficulty: string;
+//   dateAdded: Date;
+//   dateUpdated: Date;
+//   updatedBy: number;
+//   parentCategoryID: string;
+//   paidAmount: number;
+// }
+// Image.init(
+//   {
+//     gameID: {
+//       type: DataTypes.UUIDV4,
+//       allowNull: false,
+//     },
+//     image: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     status: {
+//       type: DataTypes.BOOLEAN,
+//     },
+//     prize: {
+//       type: DataTypes.INTEGER,
+//     },
+//     difficulty: {
+//       type: DataTypes.STRING,
+//       allowNull: false,
+//     },
+//     dateAdded: {
+//       type: DataTypes.DATE,
+//       allowNull: false,
+//     },
+//     dateUpdated: {
+//       type: DataTypes.DATE,
+//       allowNull: false,
+//     },
+//     updatedBy: {
+//       type: DataTypes.INTEGER,
+//       allowNull: false,
+//     },
+//     parentCategoryID: {
+//       type: DataTypes.STRING,
+//       // allowNull: false,
+//     },
+//     paidAmount: {
+//       type: DataTypes.INTEGER,
+//     },
+//   },
+//   {
+//     sequelize,
+//     modelName: 'images',
+//     freezeTableName: true,
+//   },
+// );
+// // Image.belongsTo(User);
+// // User.hasMany(Image);
+// export default Image;
 //# sourceMappingURL=imageEntity.js.map

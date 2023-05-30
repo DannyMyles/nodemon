@@ -26,7 +26,7 @@ export default class ImageController {
   ): Promise<Response | void> {
     try {
       const { id } = req.params;
-      const image = await imageService.getImageById(Number(id), next);
+      const image = await imageService.getImageById(id, next);
       return res
         .status(200)
         .send(new ApiResponse(200, image, 'Got the image!', false));
@@ -45,7 +45,9 @@ export default class ImageController {
       const images = await imageService.getImageByUserId(Number(id), next);
       return res
         .status(200)
-        .send(new ApiResponse(200, images, 'Images retrieved successfully', false));
+        .send(
+          new ApiResponse(200, images, 'Images retrieved successfully', false),
+        );
     } catch (err) {
       return next(err);
     }
@@ -56,16 +58,16 @@ export default class ImageController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
+    // console.log('File', req['file']);
     try {
       const userId = parseInt(req.params.id);
-      
+      // console.log('User ID', userId);
       // Get user data from res.locals
       const user = res.locals.user;
-      // console.log("Request", res.locals.user)
-
+      // console.log('Request', res.locals.user);
 
       // Check if the user exists
-      if(!user){
+      if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
 
@@ -80,6 +82,29 @@ export default class ImageController {
         .send(
           new ApiResponse(201, image, 'image uploaded successfully!', false),
         );
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  public async update(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        return res
+          .status(400)
+          .send(ApiResponse.generateBadRequestErrorResponse());
+      }
+
+      const data = await imageService.update(id, req.body, next);
+      return res
+        .status(200)
+        .json({ message: 'Image updated successfully', data });
+      // .send(new ApiResponse(200, data, 'User updated successfully', false));
     } catch (err) {
       return next(err);
     }
