@@ -32,9 +32,8 @@ GameCountries.init(
     },
     gameID: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true,
+      unique: true,
     },
     locale: {
       type: DataTypes.STRING,

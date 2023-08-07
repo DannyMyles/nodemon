@@ -12,7 +12,7 @@ export default class ParentCategoryService {
     next: NextFunction,
   ): Promise<ParentCategory | void> {
     // console.log('Image', image);
-    // console.log('Data', data);
+    console.log('Data', data);
     try {
       const newParentCategory = await ParentCategory.create({
         categoryName: data.categoryName,
@@ -44,6 +44,7 @@ export default class ParentCategoryService {
     data: Partial<parentCategoryModel>,
     next: NextFunction,
   ): Promise<ParentCategory | void> {
+    console.log('Data', data);
     try {
       await ParentCategory.update({ ...data }, { where: { parentCategoryID } });
       return ParentCategory.findByPk(parentCategoryID);
@@ -54,7 +55,7 @@ export default class ParentCategoryService {
 
   public async getAll(next: NextFunction): Promise<ParentCategory[] | void> {
     try {
-      return ParentCategory.findAll({});
+      return ParentCategory.findAll();
     } catch (err) {
       return next(err);
     }

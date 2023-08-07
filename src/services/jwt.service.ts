@@ -21,7 +21,7 @@ export default class JwtService {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: '30min',
+        expiresIn: '120min',
       },
     );
   }

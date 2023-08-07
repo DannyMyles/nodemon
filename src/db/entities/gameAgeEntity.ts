@@ -29,6 +29,7 @@ GameAge.init(
     gameID: {
       type: DataTypes.UUID,
       allowNull: false,
+      unique: true,
     },
     from_age: {
       type: DataTypes.STRING,

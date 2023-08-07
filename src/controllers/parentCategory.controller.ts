@@ -11,22 +11,25 @@ export default class ParentCategoryController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const { categoryName, enabled } = req.params;
+      // const { categoryName, enabled } = req.params;
+      // console.log('Params', req.params);
       const parentCategory = await parentCategoryService.createParentCategory(
         req.params,
         req['file'],
         next,
       );
-      return res
-        .status(201)
-        .send(
-          new ApiResponse(
-            201,
-            parentCategory,
-            'Parent Category created successfully!',
-            false,
-          ),
-        );
+      if (parentCategory) {
+        return res
+          .status(201)
+          .send(
+            new ApiResponse(
+              201,
+              parentCategory,
+              'Parent Category created successfully!',
+              false,
+            ),
+          );
+      }
     } catch (err) {
       return next(err);
     }
@@ -70,7 +73,7 @@ export default class ParentCategoryController {
       const data = await parentCategoryService.update(id, req.body, next);
       return res
         .status(200)
-        .json({ message: 'Parent category updated successfully', data });
+        .send({ message: 'Parent category updated successfully' });
     } catch (err) {
       return next(err);
     }
