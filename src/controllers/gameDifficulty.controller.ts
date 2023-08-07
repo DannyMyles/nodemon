@@ -15,6 +15,10 @@ export default class GameController {
         req.body,
         next,
       );
+      // return res.status(201).json({
+      //   message: 'Game difficulty created successfully',
+      //   gameDifficulty,
+      // });
       return res
         .status(201)
         .send(
@@ -34,10 +38,8 @@ export default class GameController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    // console.log('Here I am , where are you?');
     try {
       const gameDifficulties = await gameDifficultyService.getAll(next);
-      console.log('Response', gameDifficulties);
       return res
         .status(200)
         .send(

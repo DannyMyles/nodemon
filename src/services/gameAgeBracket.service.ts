@@ -7,8 +7,16 @@ export default class GameAgeService {
   public async createGameAge(
     data: Omit<gameAgeModel, 'age_bracketID'>,
     next: NextFunction,
-  ): Promise<GameAge | void> {
+  ) {
+    console.log('Data', data);
     try {
+      const existingGameAge = await GameAge.findOne({
+        where: { gameID: data.gameID },
+      });
+      console.log('Existing', existingGameAge);
+      if (existingGameAge) {
+        return 'Age bracket already exist for this game';
+      }
       const newGameAge = await GameAge.create({
         gameID: data.gameID,
         from_age: data.from_age,

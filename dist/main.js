@@ -15,13 +15,15 @@ const image_api_1 = __importDefault(require("./routes/image.api"));
 const gameDifficulty_api_1 = __importDefault(require("./routes/gameDifficulty.api"));
 const parentCategory_api_1 = __importDefault(require("./routes/parentCategory.api"));
 const gameGender_api_1 = __importDefault(require("./routes/gameGender.api"));
+const gameAgeBracket_api_1 = __importDefault(require("./routes/gameAgeBracket.api"));
+const gameCountries_api_1 = __importDefault(require("./routes/gameCountries.api"));
 const errorHandler_1 = __importDefault(require("./core/errorHandler/errorHandler"));
 const app = (0, express_1.default)();
 const logger = require('morgan');
 app.use(logger('dev'));
 const PORT = process.env.PORT || 8080;
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:5175'],
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
     credentials: true,
     optionSuccessStatus: 200,
 };
@@ -43,6 +45,8 @@ app.use('/image', image_api_1.default);
 app.use('/difficulty_levels', gameDifficulty_api_1.default);
 app.use('/parent_categories', parentCategory_api_1.default);
 app.use('/game_genders', gameGender_api_1.default);
+app.use('/game_ages', gameAgeBracket_api_1.default);
+app.use('/game_locales', gameCountries_api_1.default);
 (0, errorHandler_1.default)(app);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);

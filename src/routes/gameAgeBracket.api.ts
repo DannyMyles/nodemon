@@ -17,7 +17,7 @@ router.post(
   '/',
   verifyUser,
   permission([ROLE_TYPES.ADMIN]),
-  gameAgeController.createGameDifficulty,
+  gameAgeController.createGameAgeBracket,
 );
 router.get(
   '/single/:id',

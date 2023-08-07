@@ -5,26 +5,30 @@ import GameCountryService from '../services/gameCountries.service';
 const gameCountryService = new GameCountryService();
 
 export default class GameController {
-  public async createGameDifficulty(
+  public async createGameCountry(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const gameDifficulty = await gameCountryService.createGameCountry(
+      const gameCountry = await gameCountryService.createGameCountry(
         req.body,
         next,
       );
-      return res
-        .status(201)
-        .send(
-          new ApiResponse(
-            201,
-            gameDifficulty,
-            'Game locale created successfully!',
-            false,
-          ),
-        );
+      return res.status(200).json({
+        data: gameCountry,
+        message: 'Country created successfully',
+      });
+      // return res
+      //   .status(201)
+      //   .send(
+      //     new ApiResponse(
+      //       201,
+      //       gameCountry,
+      //       'Game locale created successfully!',
+      //       false,
+      //     ),
+      //   );
     } catch (err) {
       return next(err);
     }

@@ -6,23 +6,26 @@ import GameAgeService from '../services/gameAgeBracket.service';
 const gameAgeService = new GameAgeService();
 
 export default class GameController {
-  public async createGameDifficulty(
+  public async createGameAgeBracket(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const gameDifficulty = await gameAgeService.createGameAge(req.body, next);
+      const gameAge = await gameAgeService.createGameAge(req.body, next);
       return res
-        .status(201)
-        .send(
-          new ApiResponse(
-            201,
-            gameDifficulty,
-            'Game age created successfully!',
-            false,
-          ),
-        );
+        .status(200)
+        .json({ data: gameAge, message: 'Age bracket created successfully' });
+      // return res
+      //   .status(201)
+      //   .send(
+      //     new ApiResponse(
+      //       201,
+      //       gameAge,
+      //       'Game age created successfully!',
+      //       false,
+      //     ),
+      //   );
     } catch (err) {
       return next(err);
     }

@@ -14,7 +14,7 @@ class JwtService {
             role: role,
             email: email,
         }, process.env.JWT_SECRET, {
-            expiresIn: '30min',
+            expiresIn: '120min',
         });
     }
     verifyToken(token, next) {

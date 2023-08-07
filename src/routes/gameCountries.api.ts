@@ -14,10 +14,10 @@ router.get(
   gameCountriesController.getAll,
 );
 router.post(
-  '/',
+  '/add_new',
   verifyUser,
   permission([ROLE_TYPES.ADMIN]),
-  gameCountriesController.createGameDifficulty,
+  gameCountriesController.createGameCountry,
 );
 router.get(
   '/single/:id',
